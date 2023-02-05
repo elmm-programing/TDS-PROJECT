@@ -1,4 +1,4 @@
-package itla.tds;
+package tds.towork;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;

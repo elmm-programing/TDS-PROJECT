@@ -1,4 +1,4 @@
-package itla.tds;
+package tds.towork;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
