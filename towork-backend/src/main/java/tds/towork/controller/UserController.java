@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @POST
-    @Path("/users/login")
+    @Path("/login")
     public Response Login(User user) {
         if (user.getUsername() != null || user.getEmail() != null) {
             User fEmail = userRepo.find("email", user.getEmail()).firstResult();
