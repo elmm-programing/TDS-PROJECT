@@ -6,14 +6,23 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+     "lint": "eslint . --ext .ts,.tsx"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.6",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
     "bootstrap": "^5.2.3",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.32.2",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
+    "prettier": "^2.8.4",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.7.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.1",
     "sort-by": "^1.2.0"
