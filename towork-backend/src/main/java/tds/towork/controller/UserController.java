@@ -53,7 +53,7 @@ public class UserController {
             if (violations.isEmpty()) {
                 if (fEmail == null && fUsername == null) {
                     userRepo.persist(user);
-                    return Response.status(Response.Status.CREATED).entity(user).build();
+                    return Response.status(Response.Status.CREATED).entity(true).build();
                 } else {
                     return Response.status(Response.Status.NOT_ACCEPTABLE).entity("El Usuario ya existe").build();
                 }
