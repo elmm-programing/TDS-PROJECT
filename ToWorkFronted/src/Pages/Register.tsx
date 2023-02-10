@@ -32,34 +32,26 @@ const navigate = useNavigate();
 
   return (
     <form className='form-signin w-100 m-auto text-center' onSubmit={register}>
-      <img className="mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57" />
-      <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
-<div className="form-floating">
+      <h1 className="h3 mb-3 fw-normal">Sign out</h1>
+<div className="form-floating mb-3">
         <input type="text" className="form-control" onChange={e => setName(e.target.value)}  placeholder="name@example.com" />
         <label >Name</label>
-      </div><div className="form-floating">
+      </div><div className="form-floating mb-3">
         <input type="text" className="form-control" onChange={e => setLastName(e.target.value)}  placeholder="name@example.com" />
         <label >LastName</label>
-      </div><div className="form-floating">
-        <input type="text" className="form-control" onChange={e => setEmail(e.target.value)}  placeholder="name@example.com" />
+      </div><div className="form-floating mb-3">
+        <input type="email" className="form-control" onChange={e => setEmail(e.target.value)}  placeholder="name@example.com" />
         <label >Email address</label>
       </div>
-      <div className="form-floating">
+      <div className="form-floating mb-3">
         <input type="text" className="form-control" onChange={e => setUsername(e.target.value)}  placeholder="name@example.com" />
         <label >Username</label>
       </div>
-      <div className="form-floating">
+      <div className="form-floating mb-3">
         <input type="password" className="form-control" onChange={e => setPassword(e.target.value)}  placeholder="Password" />
         <label >Password</label>
       </div>
-
-      <div className="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me" /> Remember me
-        </label>
-      </div>
       <button className="w-100 btn btn-lg btn-primary" type="submit" >Sign out</button>
-      <p className="mt-5 mb-3 text-muted">© 2017–2022</p>
     </form>
   )
 }
