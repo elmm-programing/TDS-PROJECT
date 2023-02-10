@@ -12,3 +12,11 @@ return RestApiClient("users/users/login",{
 })
 
 }
+export const addUser = async (user:User)=>{
+return RestApiClient("users/",{
+  method: 'POST',
+  headers: {"Content-Type": "application/json"},
+  body: JSON.stringify(user),
+})
+
+}
