@@ -22,15 +22,13 @@ export function Inicio() {
                     </Container>
                 </Navbar>
             </div>
-            <div className='d-flex align-items-center justify-content-center bg-dark'>
-                <Row>
-                    <Col className='video-background position-relative'>
-                        <div className='vw-100 min-vh-50'>
+            <div className='d-flex align-items-center w-100 justify-content-center bg-dark'>
+                <Row className="w-100">
+                    <Col className='video-background position-relative '>
                             <div id='video' className='bg-dark'>
-                                <video playsInline autoPlay loop muted>
+                                <video playsInline autoPlay loop muted className='w-100'>
                                     <source src={video} type="video/mp4" />
                                 </video>
-                            </div>
                         </div>
                     </Col>
                     <Col className="p-5 rounded-0 col-md-6 position-absolute" style={{marginTop: "10vh"}}>
