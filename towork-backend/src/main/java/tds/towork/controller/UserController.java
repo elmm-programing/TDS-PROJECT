@@ -69,28 +69,30 @@ public class UserController {
     @POST
     @Path("/login")
     public Response Login(User user) {
-        if (user.getUsername() != null || user.getEmail() != null) {
-            User fEmail = userRepo.find("email", user.getEmail()).firstResult();
-            User fUsername = userRepo.find("username", user.getUsername()).firstResult();
-            if (fEmail != null) {
-                if (fEmail.getPassword().equals(user.getPassword().toString())) {
-                    return Response.status(Response.Status.CREATED).entity(true).build();
-                } else {
-                    return Response.status(Response.Status.CREATED).entity(false).build();
-                }
-            } else if (fUsername != null) {
-                if (fUsername.getPassword().equals(user.getPassword().toString())) {
-                    return Response.status(Response.Status.CREATED).entity(true).build();
-                } else {
-                    return Response.status(Response.Status.CREATED).entity(false).build();
-                }
-            } else {
-                return Response.status(Response.Status.NOT_ACCEPTABLE).entity("User Not Found").build();
-            }
-        }else{
-                return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Username or Email not added in request").build();
+
+        if (user.getUsername() == null || user.getEmail() == null) {
+
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Username or Email not added in request")
+                    .build();
         }
 
+        User fEmail = userRepo.find("email", user.getEmail()).firstResult();
+        User fUsername = userRepo.find("username", user.getUsername()).firstResult();
+        if (fEmail != null) {
+            if (fEmail.getPassword().equals(user.getPassword().toString())) {
+                return Response.status(Response.Status.CREATED).entity(true).build();
+            } else {
+                return Response.status(Response.Status.CREATED).entity(false).build();
+            }
+        } else if (fUsername != null) {
+            if (fUsername.getPassword().equals(user.getPassword().toString())) {
+                return Response.status(Response.Status.CREATED).entity(true).build();
+            } else {
+                return Response.status(Response.Status.CREATED).entity(false).build();
+            }
+        } else {
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity("User Not Found").build();
+        }
     }
 
 }
