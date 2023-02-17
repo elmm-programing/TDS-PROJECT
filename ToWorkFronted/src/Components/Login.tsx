@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Fade from 'react-bootstrap/esm/Fade';
-
+import Form from 'react-bootstrap/esm/Form';
+import '../Styles/Login.css';
 
 function Login() {
   const [user, setUser] = useState({ email: '', password: '' })
@@ -53,28 +54,26 @@ function Login() {
 
   return (
     <>
-      <form className='form-signin w-100 m-auto text-center' onSubmit={login}>
-        <h1 className="h3 mb-3 fw-normal">Sign in</h1>
-        {Object.entries(user).map(([key]) => (
-          <div className="form-floating mb-3" key={key}>
-            <input type="text" name={key} required className="form-control" onChange={onChangeInput} id="floatingInput" placeholder="Email or Username" />
-            <label >{key == 'email' ? "Email or Username" : key.charAt(0).toUpperCase() + key.slice(1)}</label>
-          </div>
+        <Form className="form-style bg-dark w-100 m-auto text-center" id='login' onSubmit={login}>
+        <h4 className="pb-3 text-white">Login</h4>
+          {Object.entries(user).map(([key]) => (
+            <Form.Group className="form-group pb-3" key={key}>
+              <Form.Control className='bg-dark text-white'   type={key == "password" ? key : "text"} name={key} onChange={onChangeInput} required placeholder={key == 'email' ? "Email or Username" : key.charAt(0).toUpperCase() + key.slice(1)} />
+            </Form.Group>
+          ))}
 
-        ))}
+          <Button variant="primary"
+            disabled={isLoading}
+            className="btn btn-success w-100 font-weight-bold text-uppercase mt-2" type="submit">{isLoading ? 'Loading…' : 'Sign in'}</Button>
+        </Form>
+        <div style={{ minHeight: '150px' }}>
+          <Fade in={alert} >
+            <Alert show={alert} className='position-absolute bottom-0 end-0 w-auto' variant={variant} onClose={() => setAlert(false)} dismissible >
+              {alertText}
+            </Alert>
 
-        <Button variant="primary"
-          disabled={isLoading}
-          className="w-100 btn-lg" type="submit">{isLoading ? 'Loading…' : 'Sign in'}</Button>
-      </form>
-      <div style={{ minHeight: '150px' }}>
-        <Fade in={alert} >
-          <Alert show={alert} className='position-absolute bottom-0 end-0 w-auto' variant={variant} onClose={() => setAlert(false)} dismissible >
-            {alertText}
-          </Alert>
-
-        </Fade >
-      </div>
+          </Fade >
+        </div>
     </>
   )
 }

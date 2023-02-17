@@ -1,0 +1,19 @@
+#registrar input {
+    border: 0;
+    height: 40px;
+    border-radius: 0;
+    border-bottom: 1px solid #fff;
+    background-color:transparent !important;
+}
+
+#registrar input:focus {
+    border-bottom: 1px solid #212529;
+    box-shadow: none;
+    outline: 0;
+    transition: 0.5s;
+}
+
+#registrar input::placeholder { 
+    color: white;
+    opacity: 0.5;
+  }
