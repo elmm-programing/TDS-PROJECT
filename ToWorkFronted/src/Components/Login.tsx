@@ -54,11 +54,11 @@ function Login() {
 
   return (
     <>
-        <Form className="form-style bg-dark w-100 m-auto text-center" id='login' onSubmit={login}>
+        <Form className="form-style bg-dark m-auto text-center" id='login' onSubmit={login}>
         <h4 className="pb-3 text-white">Login</h4>
           {Object.entries(user).map(([key]) => (
             <Form.Group className="form-group pb-3" key={key}>
-              <Form.Control className='bg-dark text-white'   type={key == "password" ? key : "text"} name={key} onChange={onChangeInput} required placeholder={key == 'email' ? "Email or Username" : key.charAt(0).toUpperCase() + key.slice(1)} />
+              <Form.Control className='bg-dark text-white' type={key == "password" ? key : "text"} name={key} onChange={onChangeInput} required placeholder={key == 'email' ? "Email or Username" : key.charAt(0).toUpperCase() + key.slice(1)} />
             </Form.Group>
           ))}
 

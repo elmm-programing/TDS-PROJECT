@@ -1,0 +1,18 @@
+body{
+    background-color: #fff;
+}
+
+#coment input {
+    border: 0;
+    height: 40px;
+    border-radius: 0;
+    border-bottom: 1px solid #ccc;
+    background-color:transparent !important;
+}
+
+#coment input:focus {
+    border-bottom: 1px solid #212529;
+    box-shadow: none;
+    outline: 0;
+    transition: 0.5s;
+}

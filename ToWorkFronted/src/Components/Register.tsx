@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/esm/Form';
 import '../Styles/Register.css';
 import Fade from 'react-bootstrap/esm/Fade';
 import Alert from 'react-bootstrap/esm/Alert';
+import { Button } from 'react-bootstrap';
 
 function Register() {
 
@@ -50,7 +51,9 @@ function Register() {
             <Form.Control className=' text-white' type={key == "email" || key == "password" ? key : "text"} name={key} onChange={onChangeInput} required placeholder={key == 'email' ? "Email or Username" : key.charAt(0).toUpperCase() + key.slice(1)} />
           </Form.Group>
         ))}
-        <button className="w-100 btn btn-lg btn-primary" type="submit" >Sign out</button>
+        <div className="pb-4">
+          <Button type="submit" className="btn btn-dark w-100 font-weight-bold text-uppercase mt-2">¡Registrate!</Button>
+        </div>
       </Form>
       <div style={{ minHeight: '150px' }}>
         <Fade in={alert} >

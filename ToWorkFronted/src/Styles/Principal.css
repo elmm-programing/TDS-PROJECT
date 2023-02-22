@@ -1,0 +1,36 @@
+body{
+  background-color: #f3f2ef;
+}
+
+#menuForm input {
+    border: 0;
+    height: 40px;
+    border-radius: 0;
+    border-bottom: 1px solid #ebebeb;
+  }
+  #menuForm input:focus {
+    border-bottom: 1px solid #198754;
+    box-shadow: none;
+    outline: 0;
+    transition: 0.5s;
+  }
+
+#icons #col{
+  transition:0.5s
+}
+
+#icons #col:hover p{
+  transition:0.5s;
+  color: #000;
+}
+
+#icons #col:hover{
+  border-radius: 5px;
+  transition:0.5s;
+  background-color: #fff;
+} 
+
+
+#icons #col img:active{
+  transform: scale(0.8);
+} 

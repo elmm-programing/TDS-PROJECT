@@ -4,7 +4,8 @@ import computer from '../assets/computer.png';
 import user from '../assets/userIcon.png';
 import money from '../assets/dollar.png';
 import video from '../assets/showoff.mp4';
-import { Container,  Row, Nav, Navbar, Col } from 'react-bootstrap';
+import '../Styles/Inicio.css';
+import { Container, Row, Nav, Navbar, Col } from 'react-bootstrap';
 
 
 export function Inicio() {
@@ -13,7 +14,7 @@ export function Inicio() {
             <div className=' pb-5'>
                 <Navbar className='shadow' fixed="top" bg="dark" variant="dark">
                     <Container>
-                        <Navbar.Brand><img src={frog} style={{ height: 50, cursor: 'pointer' }} /></Navbar.Brand>
+                        <Navbar.Brand><Nav.Link href="/"><img src={frog} style={{ height: 50, cursor: 'pointer' }} /></Nav.Link></Navbar.Brand>
                         <Nav className="ml-auto">
                             <Nav.Link href="/login" style={{ fontFamily: 'monospace', textTransform: 'uppercase' }}>Inicia Sesion</Nav.Link>
                             <Nav.Link href="" style={{ fontFamily: 'monospace', textTransform: 'uppercase' }}>||</Nav.Link>
@@ -22,16 +23,18 @@ export function Inicio() {
                     </Container>
                 </Navbar>
             </div>
-            <div className='d-flex align-items-center w-100 justify-content-center bg-dark'>
-                <Row className="w-100">
-                    <Col className='video-background position-relative '>
+            <div className='d-flex align-items-center justify-content-center bg-dark'>
+                <Row>
+                    <Col className='video-background position-relative'>
+                        <div className='vw-100 min-vh-50'>
                             <div id='video' className='bg-dark'>
-                                <video playsInline autoPlay loop muted className='w-100'>
+                                <video playsInline autoPlay loop muted>
                                     <source src={video} type="video/mp4" />
                                 </video>
+                            </div>
                         </div>
                     </Col>
-                    <Col className="p-5 rounded-0 col-md-6 position-absolute" style={{marginTop: "10vh"}}>
+                    <Col className="p-5 rounded-0 col-md-6 position-absolute" style={{ marginTop: "10vh" }}>
                         <div className="text-center font-weight-bold text-uppercase text-light fs-1" style={{ fontFamily: 'monospace' }}>Contrata o Labora en cualquier area con nuestra plataforma</div>
                         <div className='d-flex justify-content-center'>
                             <img src={logo1} className='img-fluid'></img>
