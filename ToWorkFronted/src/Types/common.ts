@@ -7,11 +7,10 @@ export interface User {
 }
 
 export interface Posts {
-    id: string,
     titulo: string,
     imagen: string,
     dueñoId: string,
     dueño: string,
     fecha: string,
-    comentario: string,
+    comentario: number,
 }

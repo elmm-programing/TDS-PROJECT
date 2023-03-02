@@ -8,7 +8,6 @@ return await RestApiClient("posts/")
 export const subirPost = async (posts:Posts)=>{
 return await RestApiClient("posts/",{
   method: 'POST',
-  headers: {"Content-Type": "application/json"},
   body: JSON.stringify(posts),
 })
 

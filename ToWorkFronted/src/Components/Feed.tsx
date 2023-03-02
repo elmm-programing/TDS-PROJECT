@@ -17,13 +17,12 @@ export default function Feed() {
     const [alertText, setAlertText] = useState("");
     const [name, setName] = useState(n);
     const [post, setPost] = useState({
-        id: '',
-        titulo: '',
-        imagen: '',
-        dueñoId: '',
-        dueño: '',
-        fecha: '',
-        comentario: '',
+        titulo: 'a',
+        imagen: 'a',
+        dueñoId: 'a',
+        dueño: 'a',
+        fecha: 'a',
+        comentario: 1,
     })
 
     const onChangeInput = (e: BaseSyntheticEvent) => {
@@ -67,7 +66,7 @@ export default function Feed() {
                         </Form.Group>
                         <Form.Group>
                             <Form.Control className='w-50' type='file' placeholder='Subir imagen' name='imagen' />
-                            <div className='d-flex justify-content-sm-end'><Button type="submit" className="btn btn-success font-weight-bold text-uppercase">Publicar</Button></div>
+                            <div className='d-flex justify-content-sm-end'><Button type="submit" className="btn btn-success font-weight-bold text-uppercase" onClick={publicar}>Publicar</Button></div>
                         </Form.Group>
                     </Form>
                 </Card.Body>

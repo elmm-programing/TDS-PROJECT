@@ -1,15 +1,14 @@
 package tds.towork.repository;
 
 import javax.enterprise.context.ApplicationScoped;
-
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
-import tds.towork.model.User;
+import tds.towork.model.Posts;
 
 /**
- * UserRepository
+ * PostsRepository
  */
-@ApplicationScoped
-public class UserRepository implements PanacheMongoRepository<User> {
 
+ @ApplicationScoped
+public class PostsRepository implements PanacheMongoRepository<Posts> {
     
 }
