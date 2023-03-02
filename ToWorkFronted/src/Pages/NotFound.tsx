@@ -1,4 +1,3 @@
-
 export function NotFound() {
     const mystyle = {
         color: "white",

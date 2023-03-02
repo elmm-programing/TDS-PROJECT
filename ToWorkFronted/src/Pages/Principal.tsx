@@ -65,8 +65,9 @@ export function Principal() {
       </Navbar>
     </div>
     <br></br>
+
     <Container className='pt-5'>
-      <div >
+      <div>
         <Chat/>
       </div>
       <Feed />

@@ -9,13 +9,13 @@ export function Cuerpo() {
             <ListGroup.Item as="li" className="border-top-0 d-flex justify-content-between align-items-start" style={{ cursor: 'pointer' }}>
                 <div className="ms-2 me-auto">
                     <p className="fw-bold">Edwin</p>
-                    <p className="blockquote-footer">Mamañema</p>
+                    <p className="blockquote-footer">Hola</p>
                 </div>
             </ListGroup.Item>
             <ListGroup.Item as="li" className="border-top-0 d-flex justify-content-between align-items-start" style={{ cursor: 'pointer' }}>
                 <div className="ms-2 me-auto">
                     <p className="fw-bold">Edwin</p>
-                    <p className="blockquote-footer">Mamañema</p>
+                    <p className="blockquote-footer">Hola</p>
                 </div>
             </ListGroup.Item>
         </ListGroup>
