@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Row, Nav, Navbar, Col, Card, Form, Button, ListGroup, ListGroupItem } from 'react-bootstrap';
+import {  Col, Card,  ListGroup } from 'react-bootstrap';
 import user from '../assets/user.png';
 import '../Styles/Feed.css';
 

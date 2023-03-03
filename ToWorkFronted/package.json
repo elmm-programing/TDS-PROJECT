@@ -7,31 +7,39 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-     "lint": "eslint . --ext .ts,.tsx"
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@tanstack/react-query": "^4.24.10",
     "@typescript-eslint/parser": "^5.51.0",
     "bootstrap": "^5.2.3",
-    "eslint": "^8.33.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-react": "^7.32.2",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
-    "prettier": "^2.8.4",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.1",
+    "react-uuid": "^2.0.0",
     "sort-by": "^1.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@vitejs/plugin-react-swc": "^3.0.0",
-    "typescript": "^4.9.3",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-standard-with-typescript": "^34.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.32.2",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5",
     "vite": "^4.1.0"
   }
 }

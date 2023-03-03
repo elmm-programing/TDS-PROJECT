@@ -1,10 +1,10 @@
 import { User } from '../Types/common'
 import { RestApiClient } from '../Utils/RestApiClient'
 
-export const getUsers = async()=>{
+export const getUsers = ()=>{
 return RestApiClient("users/")
 }
-export const loginUser = async (user:User)=>{
+export const loginUser = (user:User)=>{
 return RestApiClient("users/login",{
   method: 'POST',
   headers: {"Content-Type": "application/json"},
@@ -12,7 +12,7 @@ return RestApiClient("users/login",{
 })
 
 }
-export const addUser = async (user:User)=>{
+export const addUser =  (user:User)=>{
 return RestApiClient("users/",{
   method: 'POST',
   headers: {"Content-Type": "application/json"},

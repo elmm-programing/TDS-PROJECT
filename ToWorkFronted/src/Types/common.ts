@@ -7,10 +7,20 @@ export interface User {
 }
 
 export interface Posts {
+    idPosts: string,
     titulo: string,
     imagen: string,
     dueñoId: string,
     dueño: string,
     fecha: string,
     comentario: number,
+}
+
+export interface Comentarios {
+    idCom: string,
+    idPost: string,
+    comentario: string,
+    dueñoId: string,
+    dueño: string,
+    fecha: string,
 }

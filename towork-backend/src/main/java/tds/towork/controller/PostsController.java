@@ -18,7 +18,6 @@ import tds.towork.repository.PostsRepository;
 public class PostsController {
     private final PostsRepository postRepo;
 
-    
     @Inject
     public PostsController(PostsRepository postRepo) {
         this.postRepo = postRepo;
@@ -33,11 +32,12 @@ public class PostsController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+
     public Response subirPost(Posts post) {
         try {
 
             postRepo.persist(post);
-            return Response.status(Response.Status.CREATED).entity(true).build();
+            return Response.status(Response.Status.CREATED).entity("Estoy vivo").build();
 
         } catch (Exception ex) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Hubo un fallo con la publicacion: " + ex.toString()).build();

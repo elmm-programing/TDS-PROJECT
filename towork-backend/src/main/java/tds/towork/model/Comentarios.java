@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 public class Comentarios extends ReactivePanacheMongoEntity{
     
     @NotBlank(message = "ID de comentario")
-    private String id;
+    private String idCom;
     @NotBlank(message = "ID del post")
     private String idPost;
     private String comentario;
@@ -19,11 +19,11 @@ public class Comentarios extends ReactivePanacheMongoEntity{
     @NotBlank(message = "Fecha de subida")
     private String fecha;
     
-    public void setId(String id){
-        this.id = id;
+    public void setIdCom(String idCom){
+        this.idCom = idCom;
     }
-    public String getId(){
-        return id;
+    public String getIdCom(){
+        return idCom;
     }
     
     public void setPost(String idPost){
