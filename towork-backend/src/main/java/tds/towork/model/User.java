@@ -2,6 +2,10 @@ package tds.towork.model;
 
 import io.quarkus.mongodb.panache.common.MongoEntity;
 import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntity;
+import tds.towork.model.common.Role;
+
+import java.util.Set;
+
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -21,6 +25,16 @@ public class User extends ReactivePanacheMongoEntity {
     private String username;
     @NotBlank(message = "The user need a password")
     private String password;
+
+    private Set<Role> roles;
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     public String getName() {
         return name;
