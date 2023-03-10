@@ -91,7 +91,7 @@ export default function PostColumn() {
 
             {query.data?.map((todo: Posts) => (
 
-                <Card className='shadow-sm' key={todo.id}>
+                <Card className='shadow-sm' key={todo.id} exact="true">
                     <Card.Header>
                         <Row>
                             <Col>

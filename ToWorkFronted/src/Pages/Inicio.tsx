@@ -6,10 +6,15 @@ import money from '../assets/dollar.png';
 import video from '../assets/showoff.mp4';
 import '../Styles/Inicio.css';
 import { Container, Row, Nav, Navbar, Col } from 'react-bootstrap';
-
+// import { socket } from '../Services/socket';
+import { useCallback, useEffect, useState } from 'react';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { queryClient } from '../Utils/QueryClient';
+// import { useEffect } from 'react';
 
 export function Inicio() {
-    return (
+
+  return (
         <>
             <div className=' pb-5'>
                 <Navbar className='shadow' fixed="top" bg="dark" variant="dark">
@@ -61,7 +66,7 @@ export function Inicio() {
                 <div ><h1 className='font-weight-bold text-uppercase h1'>¿Como funciona?</h1></div>
                 <br></br>
                 <br></br>
-                <Container fluid>
+                <Container >
                     <Row className='text-center h-100 mh-100' >
                         <Col md={4} sm={6}>
                             <img src={computer} className='img-fluid'></img>
