@@ -6,6 +6,6 @@ export const RestApiClient = async (endpoint: string, config: RequestInit = {}) 
       if (response && response.ok) {
       return response.json();
       }
-      return response.text();
+      return response.json();
     })
 }

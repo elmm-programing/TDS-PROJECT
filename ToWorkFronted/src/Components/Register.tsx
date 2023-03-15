@@ -29,7 +29,7 @@ function Register() {
     e.preventDefault()
     let response: boolean | string = await addUser(user);
     if (response == true) {
-      navigate("/");
+        navigate("/inicio");
     } else if (response == "El Usuario ya existe") {
       setVariant("danger")
       setAlertText("El Usuario ya existe")

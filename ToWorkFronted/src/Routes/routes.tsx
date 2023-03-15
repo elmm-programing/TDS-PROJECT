@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { Autenticacion } from "../Pages/Authentication";
 import { Principal } from "../Pages/Principal";
 import { Inicio } from "../Pages/Inicio";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -14,8 +15,9 @@ const router = createBrowserRouter([
   },
   {
     path: "/inicio",
-    element: <Principal />,
+    element: <PrivateRoute ><Principal /></PrivateRoute>,
   },
+
 
 ]);
 export default router
