@@ -10,6 +10,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import tds.towork.model.Posts;
+
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 
 import tds.towork.repository.PostsRepository;
@@ -23,19 +25,19 @@ public class PostsController {
         this.postRepo = postRepo;
     }
 
+    @RolesAllowed("USER")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Posts> GetItems() {
         return postRepo.listAll();
     }
 
+    @RolesAllowed("USER")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-
     public Response subirPost(Posts post) {
         try {
-
             postRepo.persist(post);
             return Response.status(Response.Status.CREATED).entity("Estoy vivo").build();
 

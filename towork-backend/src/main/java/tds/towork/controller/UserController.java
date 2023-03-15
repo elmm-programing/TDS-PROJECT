@@ -1,12 +1,13 @@
 package tds.towork.controller;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validator;
 import javax.ws.rs.Consumes;
@@ -15,11 +16,15 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
+import org.jboss.resteasy.reactive.RestResponse;
+import org.jboss.resteasy.reactive.RestResponse.ResponseBuilder;
 
+import io.vertx.core.http.HttpHeaders;
 import tds.towork.model.User;
 import tds.towork.model.common.AuthResponse;
 import tds.towork.repository.UserRepository;
@@ -79,6 +84,23 @@ public class UserController {
         }
 
     }
+    @PermitAll
+    @GET
+    @Path("/prueba")
+    @Produces(MediaType.APPLICATION_JSON)
+    public RestResponse<String> Prueba() {
+        return ResponseBuilder.ok("Alguien")
+         // set a response header
+         .header("X-Cheese", "Camembert")
+         // set the Expires response header to two days from now
+         .expires(Date.from(Instant.now().plus(Duration.ofDays(2))))
+         .header("Access-Control-Allow-Credentials", "true")
+         // send a new cookie
+         .cookie(new NewCookie("Flavour", "chocolate"))
+         // end of builder API
+         .build();
+        
+    }
 
     @POST
     @Path("/login")
@@ -86,7 +108,8 @@ public class UserController {
 
         if (user.getUsername() == null || user.getEmail() == null) {
 
-            return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Username or Email not added in request")
+            return Response.status(Response.Status.NOT_ACCEPTABLE)
+                .entity(new AuthResponse("Username or Email not added in request"))
                     .build();
         }
 
@@ -95,6 +118,7 @@ public class UserController {
         if (fEmail != null) {
             if (fEmail.getPassword().equals(passwordEncoder.encode(user.getPassword().toString()))) {
                 try {
+
                     return Response.status(Response.Status.CREATED)
                             .entity(new AuthResponse(
                                     TokenUtils.generateToken(fEmail.getUsername(), fEmail.getRoles(), duration)))
@@ -104,7 +128,7 @@ public class UserController {
                 }
 
             } else {
-                return Response.status(Response.Status.CREATED).entity(false).build();
+                return Response.status(Response.Status.CREATED).entity(new AuthResponse("Password is not correct")).build();
             }
         } else if (fUsername != null) {
             if (fUsername.getPassword().equals(passwordEncoder.encode(user.getPassword().toString()))) {
@@ -117,7 +141,7 @@ public class UserController {
                     return Response.status(Response.Status.UNAUTHORIZED).build();
                 }
             } else {
-                return Response.status(Response.Status.CREATED).entity(false).build();
+                return Response.status(Response.Status.CREATED).entity(new AuthResponse("Password is not correct")).build();
             }
         } else {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity("User Not Found").build();
