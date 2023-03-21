@@ -19,7 +19,10 @@ function Register() {
     email: '',
     username: '',
     password: '',
-  })
+    roles: [
+    "USER"
+  ]
+    })
   const onChangeInput = (e: BaseSyntheticEvent) => {
     const { name, value } = e.target
     setUser({ ...user, [name]: value })
@@ -29,7 +32,9 @@ function Register() {
     e.preventDefault()
     let response: boolean | string = await addUser(user);
     if (response == true) {
-        navigate("/inicio");
+        navigate("/inicio",{
+        state:{user:user.username}
+            });
     } else if (response == "El Usuario ya existe") {
       setVariant("danger")
       setAlertText("El Usuario ya existe")
@@ -41,12 +46,14 @@ function Register() {
 
     }
   }
+  const keys = Object.keys(user).filter(key => key != "roles")
+
 
   return (
     <>
       <Form className="form-style" id='registrar' onSubmit={register}>
         <h4 className="pb-3 text-center text-white ">Registrar</h4>
-        {Object.entries(user).map(([key]) => (
+        {keys.map((key) => (
           <Form.Group className="form-group pb-3" key={key}>
             <Form.Control className=' text-white' type={key == "email" || key == "password" ? key : "text"} name={key} onChange={onChangeInput} required placeholder={key == 'email' ? "Email or Username" : key.charAt(0).toUpperCase() + key.slice(1)} />
           </Form.Group>

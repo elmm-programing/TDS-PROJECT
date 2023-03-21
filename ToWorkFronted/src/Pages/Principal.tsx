@@ -10,7 +10,6 @@ import { useLocation } from 'react-router-dom';
 export function Principal() {
 const location = useLocation();
 const data = location.state;
-console.log(data.user);
 const getPruebaPrint = async()=> {
 console.log( await getPrueba())
   
