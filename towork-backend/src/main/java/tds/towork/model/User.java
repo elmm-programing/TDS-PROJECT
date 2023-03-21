@@ -25,7 +25,6 @@ public class User extends ReactivePanacheMongoEntity {
     private String username;
     @NotBlank(message = "The user need a password")
     private String password;
-    @NotBlank(message = "The rol is needed")
     private Set<Role> roles;
 
     public Set<Role> getRoles() {

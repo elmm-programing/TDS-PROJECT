@@ -32,6 +32,9 @@ const cookies = new Cookies();
       email: user.email,
       username: user.email,
       password: user.password,
+      roles: [
+      "USER"
+      ]
     }
     let response: { token: string } = await loginUser(newUser);
     switch (response.token) {
