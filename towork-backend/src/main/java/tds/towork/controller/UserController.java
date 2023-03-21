@@ -54,7 +54,8 @@ public class UserController {
         this.userRepo = userRepo;
     }
 
-    @RolesAllowed("USER")
+    @PermitAll
+    // @RolesAllowed("USER")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<User> GetAllUsers() {
@@ -102,6 +103,7 @@ public class UserController {
         
     }
 
+    @PermitAll
     @POST
     @Path("/login")
     public Response Login(User user) {
@@ -144,7 +146,7 @@ public class UserController {
                 return Response.status(Response.Status.CREATED).entity(new AuthResponse("Password is not correct")).build();
             }
         } else {
-            return Response.status(Response.Status.NOT_ACCEPTABLE).entity("User Not Found").build();
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new AuthResponse("User Not Found")).build();
         }
     }
 
