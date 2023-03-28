@@ -30,14 +30,29 @@ public class ChatController {
     }
 
     // @RolesAllowed("USER")
+    @PermitAll
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response GetAllChats() {
+        try{
+
+return Response.status(Response.Status.OK)
+                    .entity(privateChat.listAll()).build();
+}catch (Exception ex) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE)
+                    .entity("Hubo un fallo con la publicacion: " + ex.toString()).build();
+        }
+
+    }
+
     @Path("/user")
     @PermitAll
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response GetAllChats(String userName) {
+    public Response GetAllChatsOfUser(String userName) {
         try{
 
-String queryFormatted = String.format("{'members': [ %s}}", userName);
+String queryFormatted = String.format("{'members': {'$all':[%s]}}", userName);
 return Response.status(Response.Status.OK)
                     .entity(privateChat.find(queryFormatted).list()).build();
 }catch (Exception ex) {

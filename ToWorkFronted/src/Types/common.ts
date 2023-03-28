@@ -25,3 +25,7 @@ export interface Comentarios {
     dueño: string,
     fecha: string,
 }
+export interface Chat {
+    members: string[],
+    messages: {from:string,body:string}[]
+}
