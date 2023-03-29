@@ -1,4 +1,4 @@
-import { User } from '../Types/common'
+import { IUser } from '../Types/common'
 import { RestApiClient } from '../Utils/RestApiClient'
 
 export const getUsers = ()=>{
@@ -15,7 +15,7 @@ return fetch("users/prueba",{
 )
 }
 
-export const loginUser = (user:User)=>{
+export const loginUser = (user:IUser)=>{
 return RestApiClient("users/login",{
   method: 'POST',
   headers: {"Content-Type": "application/json"},
@@ -23,7 +23,7 @@ return RestApiClient("users/login",{
 })
 
 }
-export const addUser =  (user:User)=>{
+export const addUser =  (user:IUser)=>{
 return RestApiClient("users/",{
   method: 'POST',
   headers: {"Content-Type": "application/json"},

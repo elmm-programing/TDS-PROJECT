@@ -1,4 +1,4 @@
-export interface User {
+export interface IUser {
 	name: string,
 	lastName: string,
 	email: string,
@@ -7,7 +7,7 @@ export interface User {
 	roles : string[],
 }
 
-export interface Posts {
+export interface IPosts {
     idPosts: string,
     titulo: string,
     imagen: string,
@@ -17,7 +17,7 @@ export interface Posts {
     comentario: number,
 }
 
-export interface Comentarios {
+export interface IComentarios {
     idCom: string,
     idPost: string,
     comentario: string,
@@ -25,7 +25,8 @@ export interface Comentarios {
     dueño: string,
     fecha: string,
 }
-export interface Chat {
+export interface IChat {
+    id:string,
     members: string[],
     messages: {from:string,body:string}[]
 }

@@ -1,4 +1,4 @@
-import { Posts } from '../Types/common'
+import { IPosts } from '../Types/common'
 import { RestApiClient } from '../Utils/RestApiClient'
 import Cookies from 'universal-cookie';
 
@@ -10,7 +10,7 @@ export const getPosts = async () => {
   })
 }
 
-export const subirPost = async (posts: Posts) => {
+export const subirPost = async (posts: IPosts) => {
   return RestApiClient("posts/", {
     method: 'POST',
     headers: { "Content-Type": "application/json" },

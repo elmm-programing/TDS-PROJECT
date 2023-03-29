@@ -1,13 +1,13 @@
 import { BaseSyntheticEvent, useState } from 'react'
 import { loginUser } from "../Services/Users"
-import { User } from '../Types/common'
+import { IUser } from '../Types/common'
 import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Fade from 'react-bootstrap/esm/Fade';
 import Form from 'react-bootstrap/esm/Form';
 import '../Styles/Login.css';
-import Cookies from 'universal-cookie';
+import { setCookie } from '../Utils/GetCookies';
 
 function Login() {
   const [user, setUser] = useState({ email: '', password: '' })
@@ -16,7 +16,6 @@ function Login() {
   const [alertText, setAlertText] = useState("");
   const [variant, setVariant] = useState("")
   const navigate = useNavigate();
-const cookies = new Cookies();
 
   const onChangeInput = (e: BaseSyntheticEvent) => {
     const { name, value } = e.target
@@ -26,14 +25,14 @@ const cookies = new Cookies();
   const login = async (e: BaseSyntheticEvent) => {
     setLoading(true)
     e.preventDefault()
-    let newUser: User = {
+    let newUser: IUser = {
       name: "",
       lastName: "",
       email: user.email,
       username: user.email,
       password: user.password,
       roles: [
-      "USER"
+        "USER"
       ]
     }
     let response: { token: string } = await loginUser(newUser);
@@ -56,10 +55,9 @@ const cookies = new Cookies();
         setVariant("success")
         setAlertText("The user and password are correct!")
         setAlert(true)
-        cookies.set('jwtToken', response.token, { path: '/' });
-        navigate("/inicio",{
-        state:{user:newUser.username}
-            });
+        setCookie('jwtToken', response.token)
+        setCookie('userName', newUser.username)
+        navigate("/inicio");
 
         break;
     }

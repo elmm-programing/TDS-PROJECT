@@ -1,54 +1,210 @@
-import { useEffect, useState } from 'react';
-import {  Col, Card,  ListGroup } from 'react-bootstrap';
-import user from '../assets/user.png';
-import '../Styles/Feed.css';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { queryClient } from '../Utils/QueryClient';
-import { getUserChats } from '../Services/Chat';
-import { useLocation } from 'react-router-dom';
-import {Chat as Chats } from '../Types/common'
-import ListOfChats from './ListOfChats';
 
-export default function Chat() {
-const location = useLocation();
-const routerData = location.state;
-    const [showChat, setShowChat] = useState(true);
-    const [showListAndChat, setshowListAndChat] = useState(false);
-    const { isLoading, error, data, isFetching } = useQuery({ queryKey: ['todos'], queryFn: ()=>getUserChats(routerData.user) })
+export default function Chat(props:{changeToList: React.Dispatch<React.SetStateAction<boolean>>}) {
 
-    const changeState = () => {
-    setShowChat(!showChat)
-    }
-    const switchListAndChat = ()=>{
-    setshowListAndChat(!showListAndChat)
-    }
-    
-    return (showChat) ? (
+	return (
+	  <div className="d-flex align-items-end flex-column bd-highlight mb-3 h-100" onClick={() => { props.changeToList(false) }}>
+  <div className="position-relative" style={{ height: 80+'%' }}>
+						<div className="chat-messages p-4 " style={{ height: 100+'%' }}>
 
-        <Col className='position-fixed bottom-0 rounded end-0 w-25 h-75' style={{ backgroundColor: "#fff" }}>
-            <Card id='chat' className='rounded border-1 h-100 w-100' style={{ backgroundColor: "#fff" }}>
-                <Card.Header onClick={changeState} style={{ cursor: 'pointer' }}>
-                    <img src={user} style={{ height: 40 }} />
-                    <a>{routerData.user}</a>
-                </Card.Header>
-                {if(data != undefined & showListAndChat ==true){
- <ListOfChats data={data} userName={routerData.user}/>
-}else{
-<h1>HiChat</h1>
-} }
-                
+							<div className="chat-message-right pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar1.png" className="rounded-circle mr-1" alt="Chris Wood" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:33 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+									<div className="font-weight-bold mb-1">You</div>
+									Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
+								</div>
+							</div>
 
-                     </Card>
-        </Col>
-    ) :
-        <Col className='position-fixed bottom-0 rounded end-0 w-25' style={{ backgroundColor: "#fff" }}>
-            <Card id='chat' className='rounded border-1 h-100 w-100' style={{ backgroundColor: "#fff" }}>
-                <Card.Header onClick={changeState} style={{ cursor: 'pointer' }}>
-                    <img src={user} style={{ height: 40 }} />
-                    <a>Wilker</a>
-                </Card.Header>
-            </Card>
-        </Col>
+							<div className="chat-message-left pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar3.png" className="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:34 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+									<div className="font-weight-bold mb-1">Sharon Lessman</div>
+									Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+								</div>
+							</div>
+<div className="chat-message-right pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar1.png" className="rounded-circle mr-1" alt="Chris Wood" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:33 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+									<div className="font-weight-bold mb-1">You</div>
+									Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
+								</div>
+							</div>
+
+							<div className="chat-message-left pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar3.png" className="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:34 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+									<div className="font-weight-bold mb-1">Sharon Lessman</div>
+									Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+								</div>
+							</div>
+<div className="chat-message-right pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar1.png" className="rounded-circle mr-1" alt="Chris Wood" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:33 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+									<div className="font-weight-bold mb-1">You</div>
+									Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
+								</div>
+							</div>
+
+							<div className="chat-message-left pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar3.png" className="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:34 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+									<div className="font-weight-bold mb-1">Sharon Lessman</div>
+									Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+								</div>
+							</div>
+<div className="chat-message-right pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar1.png" className="rounded-circle mr-1" alt="Chris Wood" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:33 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+									<div className="font-weight-bold mb-1">You</div>
+									Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
+								</div>
+							</div>
+
+							<div className="chat-message-left pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar3.png" className="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:34 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+									<div className="font-weight-bold mb-1">Sharon Lessman</div>
+									Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+								</div>
+							</div>
+<div className="chat-message-right pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar1.png" className="rounded-circle mr-1" alt="Chris Wood" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:33 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+									<div className="font-weight-bold mb-1">You</div>
+									Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
+								</div>
+							</div>
+
+							<div className="chat-message-left pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar3.png" className="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:34 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+									<div className="font-weight-bold mb-1">Sharon Lessman</div>
+									Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+								</div>
+							</div>
+<div className="chat-message-right pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar1.png" className="rounded-circle mr-1" alt="Chris Wood" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:33 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+									<div className="font-weight-bold mb-1">You</div>
+									Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
+								</div>
+							</div>
+
+							<div className="chat-message-left pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar3.png" className="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:34 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+									<div className="font-weight-bold mb-1">Sharon Lessman</div>
+									Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+								</div>
+							</div>
+<div className="chat-message-right pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar1.png" className="rounded-circle mr-1" alt="Chris Wood" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:33 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+									<div className="font-weight-bold mb-1">You</div>
+									Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
+								</div>
+							</div>
+
+							<div className="chat-message-left pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar3.png" className="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:34 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+									<div className="font-weight-bold mb-1">Sharon Lessman</div>
+									Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+								</div>
+							</div>
+<div className="chat-message-right pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar1.png" className="rounded-circle mr-1" alt="Chris Wood" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:33 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+									<div className="font-weight-bold mb-1">You</div>
+									Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
+								</div>
+							</div>
+
+							<div className="chat-message-left pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar3.png" className="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:34 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+									<div className="font-weight-bold mb-1">Sharon Lessman</div>
+									Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+								</div>
+							</div>
+<div className="chat-message-right pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar1.png" className="rounded-circle mr-1" alt="Chris Wood" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:33 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+									<div className="font-weight-bold mb-1">You</div>
+									Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
+								</div>
+							</div>
+
+							<div className="chat-message-left pb-4">
+								<div>
+									<img src="https://bootdey.com/img/Content/avatar/avatar3.png" className="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40"/>
+									<div className="text-muted small text-nowrap mt-2">2:34 am</div>
+								</div>
+								<div className="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+									<div className="font-weight-bold mb-1">Sharon Lessman</div>
+									Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+								</div>
+							</div>
+
+							</div>
+							</div>
+                        <div className="flex-grow-0 py-3 px-4 border-top">
+						<div className="input-group">
+							<input type="text" className="form-control" placeholder="Type your message"/>
+							<button className="btn btn-primary">Send</button>
+						</div>
+					</div>                        
+</div>
+
+	       )
 }
-
-

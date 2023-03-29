@@ -8,7 +8,7 @@ import { getPosts, subirPost } from "../Services/Posts"
 import Alert from 'react-bootstrap/esm/Alert';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient } from '../Utils/QueryClient';
-import { Posts } from '../Types/common';
+import { IPosts } from '../Types/common';
 
 export default function PostColumn() {
     const today = new Date(Date.now());
@@ -89,7 +89,7 @@ export default function PostColumn() {
 
             <br></br>
 
-            {query.data?.map((todo: Posts) => (
+            {query.data?.map((todo: IPosts) => (
 
                 <Card className='shadow-sm' key={todo.id} exact="true">
                     <Card.Header>
