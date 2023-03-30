@@ -1,13 +1,13 @@
 import { IChat } from "../Types/common";
 
-export default function ListOfContacts(props:{data:IChat[]|undefined,changeToChat: React.Dispatch<React.SetStateAction<boolean>>}) {
+export default function ListOfContacts(props:{data:IChat[]|undefined,changeToChat: React.Dispatch<React.SetStateAction<boolean>>,setSelected: React.Dispatch<React.SetStateAction<IChat>>}) {
 	return(
 	<ul className="list-unstyled mb-0">
 						{props.data?.map((todo: IChat) => {
 							return (
 								<li className="p-2 border-bottom" key={todo.id}    >
 									<a className="d-flex justify-content-between"
-	onClick={() => { props.changeToChat(true) }}>
+	onClick={() => { props.changeToChat(true);props.setSelected(todo) }}>
 										<div className="d-flex flex-row">
 											<img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp" alt="avatar"
 												className="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" />

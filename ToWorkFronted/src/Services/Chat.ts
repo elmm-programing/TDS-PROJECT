@@ -1,6 +1,6 @@
 import { RestApiClient } from '../Utils/RestApiClient'
 import Cookies from 'universal-cookie';
-import { Chat } from '../Types/common';
+import { Chat, IChat } from '../Types/common';
 
 const cookies = new Cookies();
 export const getUserChats = async (userName: string):Promise<Chat[]> => {
@@ -9,6 +9,14 @@ export const getUserChats = async (userName: string):Promise<Chat[]> => {
     // headers:{"Authorization":`Bearer ${cookies.get('jwtToken')}`},
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userName),
+  })
+}
+export const postMessage = async (chat: IChat):Promise<String> => {
+  return await RestApiClient("chat",{
+    method:'POST',
+    // headers:{"Authorization":`Bearer ${cookies.get('jwtToken')}`},
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(chat),
   })
 }
 
