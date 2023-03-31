@@ -5,27 +5,26 @@ import { getUserName } from "../Utils/GetCookies"
 import { queryClient } from "../Utils/QueryClient";
 import { postMessage } from "../Services/Chat"
 
-export default function Chat(props: { changeToList: React.Dispatch<React.SetStateAction<boolean>>, data: IChat,mutation: UseMutationResult<String, unknown, IChat, unknown> }) {
-  const [newMessage, setNewMessage] = useState<IChat>(props.data)
-	
-const OnChangeInput = useRef(null);
-	  
-const SendMessage = ()=>{
-newMessage?.messages.push( {
-    from: getUserName(),
-    body: OnChangeInput.current?.value
-})
-console.log(newMessage)
-}
+export default function Chat(props: { changeToList: React.Dispatch<React.SetStateAction<boolean>>, data: IChat, mutation: UseMutationResult<String, unknown, IChat, unknown> }) {
+	const [newMessage, setNewMessage] = useState<IChat>(props.data)
+
+	const OnChangeInput = useRef(null);
+
+	const SendMessage = () => {
+		newMessage?.messages.push({
+			from: getUserName(),
+			body: OnChangeInput.current?.value
+		})
+		console.log(newMessage)
+	}
 
 
 
 
 	return (
 		<div className="d-flex align-items-end flex-column bd-highlight mb-3 h-100" >
-			<div className="position-relative" style={{ height: 80 + '%' }}>
-				<div className="chat-messages p-4 " style={{ height: 100 + '%' }}>
-				<h1 onClick={() => { props.changeToList(false) }}>back</h1>
+			<div className="position-relative" style={{ height: 80 + '%' , width: 100 + '%'}}>
+				<div className="chat-messages  " style={{ height: 100 + '%', width: 100 + '%'}}>
 
 					{props.data.messages.map(val => {
 
@@ -72,9 +71,9 @@ console.log(newMessage)
 				<div className="input-group">
 					<input type="text" ref={OnChangeInput} className="form-control" placeholder="Type your message" />
 					<button className="btn btn-primary" onClick={() => {
-SendMessage()
-                                props.mutation.mutate(newMessage)
-                            }} >Send</button>
+						SendMessage()
+						props.mutation.mutate(newMessage)
+					}} >Send</button>
 				</div>
 			</div>
 		</div>

@@ -36,20 +36,29 @@ const mutation = useMutation({
 	console.log(selectedChat)
   }, [selectedChat]);
 
-	if (data) {
-		data = data?.map(value => {
-			let x = value.members.filter((name: string) => name != userName)
-			value.members = x.flat()
-			return value
-		}).filter(val => val.members[0] != undefined)
-	}
+	// if (data) {
+	// 	data = data?.map(value => {
+	// 		let x = value.members.filter((name: string) => name != userName)
+	// 		value.members = x.flat()
+	// 		return value
+	// 	}).filter(val => val.members[0] != undefined)
+	// }
 	return (showChat) ? (
 
 		<Col className='position-fixed bottom-0 rounded end-0 w-25 h-75' style={{ backgroundColor: "#fff" }}>
 			<Card id='chat' className='rounded border-1 h-100 w-100' style={{ backgroundColor: "#fff" }}>
-				<Card.Header onClick={changeState} style={{ cursor: 'pointer' }}>
-					<img src={user} style={{ height: 40 }} />
-					<a>{userName}</a>
+				<Card.Header  style={{ cursor: 'pointer' }}>
+				{showListOrSendMessage == true ? (<>
+				<svg xmlns="http://www.w3.org/2000/svg" onClick={() => { setShowListOrSendMessage(!showListOrSendMessage) }} fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width={30+"px"} height={30+"px"}>
+  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+</svg>
+
+
+				</>):(<></>)}
+				
+					
+					<img onClick={changeState} src={user} style={{ height: 40 }} />
+					<a onClick={changeState}>{userName}</a>
 				</Card.Header>
 				{showListOrSendMessage === true ? (
 					<Chat
