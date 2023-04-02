@@ -1,13 +1,17 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { BaseSyntheticEvent, useRef, useState } from "react"
+import { BaseSyntheticEvent, useEffect, useRef, useState } from "react"
 import { IChat } from "../Types/common"
 import { getUserName } from "../Utils/GetCookies"
 import { queryClient } from "../Utils/QueryClient";
 import { postMessage } from "../Services/Chat"
+import { useWebSocket } from "react-use-websocket/dist/lib/use-websocket";
+import { SendMessage } from "react-use-websocket/dist/lib/types";
 
-export default function Chat(props: { changeToList: React.Dispatch<React.SetStateAction<boolean>>, data: IChat, mutation: UseMutationResult<String, unknown, IChat, unknown> }) {
+export default function Chat(props: { changeToList: React.Dispatch<React.SetStateAction<boolean>>, data: IChat, mutation: UseMutationResult<String, unknown, IChat, unknown>,sendMessage: SendMessage }) {
 	const [newMessage, setNewMessage] = useState<IChat>(props.data)
-
+	useEffect( () => {
+    setNewMessage(props.data);
+}, [props.data]); 
 	const OnChangeInput = useRef(null);
 
 	const SendMessage = () => {
@@ -15,6 +19,9 @@ export default function Chat(props: { changeToList: React.Dispatch<React.SetStat
 			from: getUserName(),
 			body: OnChangeInput.current?.value
 		})
+		let members = newMessage.members
+		members = members.filter(val => val != getUserName())
+		props.sendMessage(members[0])
 		console.log(newMessage)
 	}
 
@@ -23,15 +30,15 @@ export default function Chat(props: { changeToList: React.Dispatch<React.SetStat
 
 	return (
 		<div className="d-flex align-items-end flex-column bd-highlight mb-3 h-100" >
-			<div className="position-relative" style={{ height: 80 + '%' , width: 100 + '%'}}>
-				<div className="chat-messages  " style={{ height: 100 + '%', width: 100 + '%'}}>
+			<div className="position-relative" style={{ height: 80 + '%', width: 100 + '%' }}>
+				<div className="chat-messages  " style={{ height: 100 + '%', width: 100 + '%' }}>
 
-					{props.data.messages.map(val => {
+					{newMessage.messages.map(val => {
 
 						val.from
 						if (val.from == getUserName()) {
 							return (
-								<div className="chat-message-right pb-4" key={val.body}>
+								<div className="chat-message-right pb-4" >
 									<div>
 										<img src="https://bootdey.com/img/Content/avatar/avatar1.png" className="rounded-circle mr-1" alt="Chris Wood" width="40" height="40" />
 										<div className="text-muted small text-nowrap mt-2">2:33 am</div>
@@ -47,7 +54,7 @@ export default function Chat(props: { changeToList: React.Dispatch<React.SetStat
 
 						} else {
 							return (
-								<div className="chat-message-left pb-4" key={val.body}>
+								<div className="chat-message-left pb-4">
 									<div>
 										<img src="https://bootdey.com/img/Content/avatar/avatar3.png" className="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40" />
 										<div className="text-muted small text-nowrap mt-2">2:34 am</div>

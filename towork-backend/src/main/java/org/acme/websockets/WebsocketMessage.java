@@ -3,10 +3,12 @@ package org.acme.websockets;
 public class WebsocketMessage {
 
     public String message;
-    public String key;
+    public String userName;
+    public String Type;
 
-    WebsocketMessage(String message, String key) {
+    WebsocketMessage(String message, String userName,String Type) {
         this.message = message;
-        this.key = key;
+        this.userName = userName;
+        this.Type = Type;
     }
 }

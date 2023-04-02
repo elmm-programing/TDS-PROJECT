@@ -3,7 +3,7 @@ import Cookies from 'universal-cookie';
 import { Chat, IChat } from '../Types/common';
 
 const cookies = new Cookies();
-export const getUserChats = async (userName: string):Promise<Chat[]> => {
+export const getUserChats = async (userName: string):Promise<IChat[]> => {
   return await RestApiClient("chat/user",{
     method:'POST',
     // headers:{"Authorization":`Bearer ${cookies.get('jwtToken')}`},
