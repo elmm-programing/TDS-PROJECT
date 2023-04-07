@@ -1,42 +1,44 @@
 import { useState } from "react";
-import Form from "react-bootstrap/esm/Form";
-import { Highlighter, Typeahead } from 'react-bootstrap-typeahead'; // ES2015
-export function AutoComplete() {
-  const [singleSelections, setSingleSelections] = useState([]);
-  const [multiSelections, setMultiSelections] = useState([]);
-  const props = {};
-  var options = [
-    'John',
-    'Miles',
-    'Charles',
-    'Herbie',
-  ];
-  props.renderMenuItemChildren = (option, { text }) => (
-    <>
-      <Highlighter search={text}>{option}</Highlighter>,
-      <div>
-        <small>Population: {option}</small>
-      </div>
-    </>
-  );
+import { AsyncTypeahead } from 'react-bootstrap-typeahead'; // ES2015
+import { getUser } from "../Services/Users";
+
+export const AutoComplete = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [options, setOptions] = useState<{ username: string, titulo: string }[]>([]);
+
+  const handleSearch = (query: string) => {
+    setIsLoading(true);
+    let response = getUser(query)
+    console.log(response)
+    response.then(value => {
+      let al = value.map(val => {
+        return { username: val.username, titulo: val.name }
+      })
+      setOptions(al);
+      setIsLoading(false);
+    })
+  };
+
+  // Bypass client-side filtering by returning `true`. Results are already
+  // filtered by the search endpoint, so no need to do it again.
+  const filterBy = () => true;
+
   return (
-    <>
-      <Form.Group>
-        <Typeahead
-          {...props}
-          id="basic-typeahead-single"
-          labelKey="name"
-          options={options}
-          inputProps={{
-            className: 'my-custom-classname',
-            style: {
-              'width': 30 + 'rem',
-            }
-          }}
-          placeholder="Choose a state..."
-          selected={singleSelections}
-        />
-      </Form.Group>
-    </>
+    <AsyncTypeahead
+      labelKey={(option: any) => `${option.username} `}
+      filterBy={filterBy}
+      id="async-example"
+      isLoading={isLoading}
+      minLength={3}
+      onSearch={handleSearch}
+      options={options}
+      renderMenuItemChildren={(option: any) => (
+        <>
+          <span>{option.username}</span>
+        </>
+      )}
+      placeholder="Search user..."
+    />
   );
-}
+};
+
