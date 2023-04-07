@@ -32,9 +32,6 @@ function Login() {
     newUser.email = user.email
     newUser.username = user.email
     newUser.password = user.password
-    newUser.roles = [
-      "USER"
-    ]
     let response: IAuthResponse = await loginUser(newUser);
     if (response.token) {
       setLoading(false);
