@@ -1,10 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect,  useState } from 'react';
 import { Col, Card } from 'react-bootstrap';
 import user from '../assets/user.png';
-import '../Styles/Feed.css';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import '../Styles/Feed.css'; import { useMutation, useQuery } from '@tanstack/react-query';
 import { getUserChats } from '../Services/Chat';
-import { IChat } from '../Types/common';
 import Chat from './Chat';
 import ListOfContacts from './ListOfContacts';
 import { queryClient } from '../Utils/QueryClient';
@@ -54,15 +52,7 @@ export default function ChatModal() {
 		shouldReconnect: (closeEvent) => true,
 	});
 
-
-	// if (data) {
-	// 	data = data?.map(value => {
-	// 		let x = value.members.filter((name: string) => name != userName)
-	// 		value.members = x.flat()
-	// 		return value
-	// 	}).filter(val => val.members[0] != undefined)
-	// }
-	return (showChat) ? (
+		return (showChat) ? (
 
 		<Col className='position-fixed bottom-0 rounded end-0 w-25 h-75' style={{ backgroundColor: "#fff" }}>
 			<Card id='chat' className='rounded border-1 h-100 w-100' style={{ backgroundColor: "#fff" }}>
@@ -96,7 +86,7 @@ export default function ChatModal() {
 			<Card id='chat' className='rounded border-1 h-100 w-100' style={{ backgroundColor: "#fff" }}>
 				<Card.Header onClick={changeState} style={{ cursor: 'pointer' }}>
 					<img src={user} style={{ height: 40 }} />
-					<a>Wilker</a>
+					<a>{userState.user.username}</a>
 				</Card.Header>
 			</Card>
 		</Col>
