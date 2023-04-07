@@ -88,10 +88,10 @@ export default function PostColumn() {
             </Card>
 
             <br></br>
-
+{/*
             {query.data?.map((todo: IPosts) => (
 
-                <Card className='shadow-sm' key={todo.id} exact="true">
+                <Card className='shadow-sm'>
                     <Card.Header>
                         <Row>
                             <Col>
@@ -126,7 +126,7 @@ export default function PostColumn() {
                     </Card.Footer>
                 </Card>
 
-            ))}
+            ))}*/}
 
 
 

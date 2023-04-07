@@ -1,19 +1,22 @@
+import { useChatStore } from "../store/ChatsStore";
+import { useUserStore } from "../store/UsersStore";
 import { IChat } from "../Types/common";
-import { getUserName } from "../Utils/GetCookies";
 
-export default function ListOfContacts(props: { data: IChat[] | undefined, changeToChat: React.Dispatch<React.SetStateAction<boolean>>, setSelected: React.Dispatch<React.SetStateAction<IChat>> }) {
+export default function ListOfContacts(props: { changeToChat: React.Dispatch<React.SetStateAction<boolean>> }) {
 
+	const state = useUserStore()
+	const chatState = useChatStore()
+	const userChats = chatState.userChats
 	const getChatName = (members: string[]) => {
-
-		return members.filter((name: string) => name != getUserName()).filter(val => val != undefined)
+		return members.filter((name: string) => name != state.user.username).filter(val => val != undefined)
 	}
 	return (
 		<ul className="list-unstyled mb-0">
-			{props.data?.map((todo: IChat) => {
+			{userChats.map((todo: IChat) => {
 				return (
 					<li className="p-2 border-bottom" key={todo.id}    >
 						<a className="d-flex justify-content-between"
-							onClick={() => { props.changeToChat(true); props.setSelected(todo) }}>
+							onClick={() => { props.changeToChat(true);chatState.selectedChat = todo}}>
 							<div className="d-flex flex-row">
 								<img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-8.webp" alt="avatar"
 									className="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60" />

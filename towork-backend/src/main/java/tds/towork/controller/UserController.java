@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.Validator;
@@ -24,7 +23,6 @@ import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.RestResponse.ResponseBuilder;
 
-import io.vertx.core.http.HttpHeaders;
 import tds.towork.model.User;
 import tds.towork.model.common.AuthResponse;
 import tds.towork.repository.UserRepository;
@@ -63,6 +61,21 @@ public class UserController {
     }
 
     @PermitAll
+    // @RolesAllowed("USER")
+    @GET
+    @Path("/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response GetUser(String username) {
+        try {
+        String query = String.format("{'username': { '$regex': /^%s/i }}", username);
+        return Response.status(Response.Status.CREATED).entity(userRepo.find(query).list()).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(e).build();
+        }
+        
+    }
+
+    @PermitAll
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -76,31 +89,16 @@ public class UserController {
         try {
             if (fEmail == null && fUsername == null) {
                 userRepo.persist(user);
-                return Response.status(Response.Status.CREATED).entity(true).build();
+
+                    AuthResponse entity = new AuthResponse(TokenUtils.generateToken(user.getUsername(), user.getRoles(), duration),user);
+                return Response.status(Response.Status.CREATED).entity(entity).build();
             } else {
-                return Response.status(Response.Status.NOT_ACCEPTABLE).entity("El Usuario ya existe").build();
+                return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new AuthResponse("El Usuario ya existe")).build();
             }
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(e).build();
         }
 
-    }
-    @PermitAll
-    @GET
-    @Path("/prueba")
-    @Produces(MediaType.APPLICATION_JSON)
-    public RestResponse<String> Prueba() {
-        return ResponseBuilder.ok("Alguien")
-         // set a response header
-         .header("X-Cheese", "Camembert")
-         // set the Expires response header to two days from now
-         .expires(Date.from(Instant.now().plus(Duration.ofDays(2))))
-         .header("Access-Control-Allow-Credentials", "true")
-         // send a new cookie
-         .cookie(new NewCookie("Flavour", "chocolate"))
-         // end of builder API
-         .build();
-        
     }
 
     @PermitAll
@@ -111,7 +109,7 @@ public class UserController {
         if (user.getUsername() == null || user.getEmail() == null) {
 
             return Response.status(Response.Status.NOT_ACCEPTABLE)
-                .entity(new AuthResponse("Username or Email not added in request"))
+                    .entity(new AuthResponse("Username or Email not added in request"))
                     .build();
         }
 
@@ -120,30 +118,33 @@ public class UserController {
         if (fEmail != null) {
             if (fEmail.getPassword().equals(passwordEncoder.encode(user.getPassword().toString()))) {
                 try {
+                    AuthResponse entity = new AuthResponse(TokenUtils.generateToken(fEmail.getUsername(), fEmail.getRoles(), duration),fEmail);
 
                     return Response.status(Response.Status.CREATED)
-                            .entity(new AuthResponse(
-                                    TokenUtils.generateToken(fEmail.getUsername(), fEmail.getRoles(), duration)))
+                            .entity(entity)
                             .build();
                 } catch (Exception e) {
                     return Response.status(Response.Status.UNAUTHORIZED).build();
                 }
 
             } else {
-                return Response.status(Response.Status.CREATED).entity(new AuthResponse("Password is not correct")).build();
+                return Response.status(Response.Status.CREATED).entity(new AuthResponse("Password is not correct"))
+                        .build();
             }
         } else if (fUsername != null) {
             if (fUsername.getPassword().equals(passwordEncoder.encode(user.getPassword().toString()))) {
                 try {
+
+                    AuthResponse entity = new AuthResponse(TokenUtils.generateToken(fUsername.getUsername(), fUsername.getRoles(), duration),fUsername);
                     return Response.status(Response.Status.CREATED)
-                            .entity(new AuthResponse(
-                                    TokenUtils.generateToken(fUsername.getUsername(), fUsername.getRoles(), duration)))
+                            .entity(entity)
                             .build();
                 } catch (Exception e) {
                     return Response.status(Response.Status.UNAUTHORIZED).build();
                 }
             } else {
-                return Response.status(Response.Status.CREATED).entity(new AuthResponse("Password is not correct")).build();
+                return Response.status(Response.Status.CREATED).entity(new AuthResponse("Password is not correct"))
+                        .build();
             }
         } else {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new AuthResponse("User Not Found")).build();

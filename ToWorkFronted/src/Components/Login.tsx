@@ -1,6 +1,6 @@
 import { BaseSyntheticEvent, useState } from 'react'
 import { loginUser } from "../Services/Users"
-import { IUser } from '../Types/common'
+import { IAuthResponse } from '../Types/common'
 import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
@@ -8,6 +8,8 @@ import Fade from 'react-bootstrap/esm/Fade';
 import Form from 'react-bootstrap/esm/Form';
 import '../Styles/Login.css';
 import { setCookie } from '../Utils/GetCookies';
+import { CUser } from '../Types/User';
+import { useUserStore } from '../store/UsersStore';
 
 function Login() {
   const [user, setUser] = useState({ email: '', password: '' })
@@ -16,6 +18,7 @@ function Login() {
   const [alertText, setAlertText] = useState("");
   const [variant, setVariant] = useState("")
   const navigate = useNavigate();
+  const state = useUserStore()
 
   const onChangeInput = (e: BaseSyntheticEvent) => {
     const { name, value } = e.target
@@ -25,42 +28,35 @@ function Login() {
   const login = async (e: BaseSyntheticEvent) => {
     setLoading(true)
     e.preventDefault()
-    let newUser: IUser = {
-      name: "",
-      lastName: "",
-      email: user.email,
-      username: user.email,
-      password: user.password,
-      roles: [
-        "USER"
-      ]
-    }
-    let response: { token: string } = await loginUser(newUser);
-    switch (response.token) {
-      case "Password is not correct":
-        setLoading(false);
-        setVariant("danger")
-        setAlertText("The Password is incorrect")
-        setAlert(true)
-        break;
-      case "User Not Found":
-        setLoading(false);
-        setVariant("danger")
-        setAlertText("The user was not found")
-        setAlert(true)
-        break;
+    let newUser = new CUser()
+    newUser.email = user.email
+    newUser.username = user.email
+    newUser.password = user.password
+    newUser.roles = [
+      "USER"
+    ]
+    let response: IAuthResponse = await loginUser(newUser);
+    if (response.token) {
+      setLoading(false);
+      setVariant("success")
+      setAlertText("The user and password are correct!")
+      setAlert(true)
+      setCookie('jwtToken', response.token)
+      state.setUser(response.user)
+      navigate("/inicio");
 
-      default:
-        setLoading(false);
-        setVariant("success")
-        setAlertText("The user and password are correct!")
-        setAlert(true)
-        setCookie('jwtToken', response.token)
-        setCookie('userName', newUser.username)
-        navigate("/inicio");
-
-        break;
+    } else if (response.error == "Password is not correct") {
+      setLoading(false);
+      setVariant("danger")
+      setAlertText("The Password is incorrect")
+      setAlert(true)
+    } else if (response.error == "User Not Found") {
+      setLoading(false);
+      setVariant("danger")
+      setAlertText("The user was not found")
+      setAlert(true)
     }
+
   }
 
   return (

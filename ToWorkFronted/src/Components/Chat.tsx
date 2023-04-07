@@ -1,28 +1,25 @@
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { BaseSyntheticEvent, useEffect, useRef, useState } from "react"
+import {  UseMutationResult } from "@tanstack/react-query";
+import {  useEffect, useRef, useState } from "react"
 import { IChat } from "../Types/common"
-import { getUserName } from "../Utils/GetCookies"
-import { queryClient } from "../Utils/QueryClient";
-import { postMessage } from "../Services/Chat"
-import { useWebSocket } from "react-use-websocket/dist/lib/use-websocket";
 import { SendMessage } from "react-use-websocket/dist/lib/types";
+import { useUserStore } from "../store/UsersStore";
+import { useChatStore } from "../store/ChatsStore";
 
-export default function Chat(props: { changeToList: React.Dispatch<React.SetStateAction<boolean>>, data: IChat, mutation: UseMutationResult<String, unknown, IChat, unknown>,sendMessage: SendMessage }) {
-	const [newMessage, setNewMessage] = useState<IChat>(props.data)
-	useEffect( () => {
-    setNewMessage(props.data);
-}, [props.data]); 
+export default function Chat(props: { changeToList: React.Dispatch<React.SetStateAction<boolean>>, sendMessage: SendMessage,mutation: UseMutationResult<String, unknown, IChat, unknown> }) {
+
+  const state = useUserStore()
+	const chatState = useChatStore()
 	const OnChangeInput = useRef(null);
 
 	const SendMessage = () => {
-		newMessage?.messages.push({
-			from: getUserName(),
+		chatState.selectedChat.messages.push({
+			from: state.user.username,
 			body: OnChangeInput.current?.value
 		})
-		let members = newMessage.members
-		members = members.filter(val => val != getUserName())
+		let members = chatState.selectedChat.members
+		members = members.filter(val => val != state.user.username)
 		props.sendMessage(members[0])
-		console.log(newMessage)
+		console.log(chatState.selectedChat)
 	}
 
 
@@ -33,10 +30,10 @@ export default function Chat(props: { changeToList: React.Dispatch<React.SetStat
 			<div className="position-relative" style={{ height: 80 + '%', width: 100 + '%' }}>
 				<div className="chat-messages  " style={{ height: 100 + '%', width: 100 + '%' }}>
 
-					{newMessage.messages.map(val => {
+					{chatState.selectedChat.messages.map(val => {
 
 						val.from
-						if (val.from == getUserName()) {
+						if (val.from == state.user.username) {
 							return (
 								<div className="chat-message-right pb-4" >
 									<div>
@@ -79,7 +76,7 @@ export default function Chat(props: { changeToList: React.Dispatch<React.SetStat
 					<input type="text" ref={OnChangeInput} className="form-control" placeholder="Type your message" />
 					<button className="btn btn-primary" onClick={() => {
 						SendMessage()
-						props.mutation.mutate(newMessage)
+						props.mutation.mutate(chatState.selectedChat)
 					}} >Send</button>
 				</div>
 			</div>

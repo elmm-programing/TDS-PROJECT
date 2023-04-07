@@ -1,9 +1,6 @@
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
-export const getUserName = ()=>{
-return cookies.get('userName')
-}
 export const getToken = ()=>{
 return cookies.get('jwtToken')
 }

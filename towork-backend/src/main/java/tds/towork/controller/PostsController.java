@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import tds.towork.model.Posts;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 
@@ -31,6 +32,21 @@ public class PostsController {
     public List<Posts> GetItems() {
         return postRepo.listAll();
     }
+    @PermitAll
+    // @RolesAllowed("USER")
+    @GET
+    @Path("/{titulo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response GetUser(String titulo) {
+        try {
+        String query = String.format("{'titulo': { '$regex': /^%s/i }}", titulo);
+        return Response.status(Response.Status.CREATED).entity(postRepo.find(query).list()).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(e).build();
+        }
+        
+    }
+
 
     @RolesAllowed("USER")
     @POST

@@ -10,6 +10,7 @@ import { Container, Row, Nav, Navbar, Col } from 'react-bootstrap';
 import { useCallback, useEffect, useState } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { queryClient } from '../Utils/QueryClient';
+import { useChatStore } from '../store/ChatsStore';
 // import { useEffect } from 'react';
 
 export function Inicio() {

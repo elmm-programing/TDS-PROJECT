@@ -4,25 +4,24 @@ import user from '../assets/user.png';
 import '../Styles/Feed.css';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { getUserChats } from '../Services/Chat';
-import { getUserName } from '../Utils/GetCookies';
 import { IChat } from '../Types/common';
 import Chat from './Chat';
 import ListOfContacts from './ListOfContacts';
 import { queryClient } from '../Utils/QueryClient';
 import { postMessage } from "../Services/Chat"
 import useWebSocket from 'react-use-websocket';
+import { useUserStore } from '../store/UsersStore';
+import { useChatStore } from '../store/ChatsStore';
 
 export default function ChatModal() {
-	const userName = getUserName()
+	const userState = useUserStore()
+	const chatState = useChatStore()
 	const [showChat, setShowChat] = useState(true);
 	const [showListOrSendMessage, setShowListOrSendMessage] = useState(false);
-	const [selectedChat, setSelectedChat] = useState<IChat>({
-		id: "",
-		members: [],
-		messages: []
-	});
-	const inputElement = useRef(null);
-	let { status, data, error, isFetching } = useQuery({ queryKey: ['userChats'], queryFn: () => getUserChats(userName) })
+	const { data } = useQuery(["userChats"], () => getUserChats(userState.user.username));
+
+
+
 	const mutation = useMutation({
 		mutationFn: postMessage,
 		onSuccess: () => {
@@ -35,25 +34,22 @@ export default function ChatModal() {
 		setShowChat(!showChat)
 	}
 	useEffect(() => {
-		console.log(data)
-		let newSelected = data?.filter(val => val.id = selectedChat.id) ? data?.filter(val => val.id = selectedChat.id) : [selectedChat];
-		if (newSelected[0]) {
-			setSelectedChat(newSelected[0])
+		if (data !== undefined) {
+			chatState.setUserChats(data)
 		}
 	}, [data]);
-
 	const {
 		sendMessage,
 	} = useWebSocket('ws://localhost:8080/api/live/ws', {
 		onOpen: () => console.log('opened'),
 		onMessage: (event) => {
-			if (event.data == getUserName()) {
+			if (event.data == userState.user.username) {
 
 				queryClient.invalidateQueries({ queryKey: ['userChats'] })
 
 			}
 			console.log(event.data)
-			console.log(event.data == getUserName())
+			console.log(event.data == userState.user.username)
 		},
 		shouldReconnect: (closeEvent) => true,
 	});
@@ -81,18 +77,17 @@ export default function ChatModal() {
 
 
 					<img onClick={changeState} src={user} style={{ height: 40 }} />
-					<a onClick={changeState}>{userName}</a>
+					<a onClick={changeState}>{userState.user.username}</a>
 				</Card.Header>
+
 				{showListOrSendMessage === true ? (
 					<Chat
 						changeToList={setShowListOrSendMessage}
-						data={selectedChat}
-						mutation={mutation}
 						sendMessage={sendMessage}
-						ref={inputElement}
+						mutation={mutation}
 					/>
 				) : (
-					<ListOfContacts changeToChat={setShowListOrSendMessage} data={data} setSelected={setSelectedChat} />
+					<ListOfContacts changeToChat={setShowListOrSendMessage} />
 				)}
 			</Card>
 		</Col>

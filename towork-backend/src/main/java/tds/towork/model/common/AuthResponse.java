@@ -1,18 +1,34 @@
 package tds.towork.model.common;
 
+import tds.towork.model.User;
+
 /**
  * AuthResponse
  */
 public class AuthResponse {
-    public String token;
+    private String token;
+    private User user;
+    private String error;
 
     public AuthResponse() {
     }
 
-    public AuthResponse( String token) {
+    public AuthResponse(String token, User user) {
         this.token = token;
+        this.user = user;
     }
 
+    public AuthResponse(String error) {
+        this.error = error;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getToken() {
         return token;
@@ -22,10 +38,12 @@ public class AuthResponse {
         this.token = password;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%s", token);
+    public String getError() {
+        return error;
     }
 
-    
+    public void setError(String errorMessage) {
+        this.error = errorMessage;
+    }
+
 }
