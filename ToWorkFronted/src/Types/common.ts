@@ -7,14 +7,16 @@ export interface IUser {
 	roles: string[],
 }
 
-export interface IPosts {
+export interface IPost {
 	idPosts: string,
 	titulo: string,
-	imagen: string,
+	comentario: string,
+	file: any,
+	fileName: any,
 	dueñoId: string,
 	dueño: string,
 	fecha: string,
-	comentario: number,
+	perfil: any,
 }
 
 export interface IComentarios {
@@ -24,6 +26,7 @@ export interface IComentarios {
 	dueñoId: string,
 	dueño: string,
 	fecha: string,
+	perfil: any,
 }
 export interface IChat {
 	id: string,
@@ -36,3 +39,17 @@ export interface IAuthResponse {
 	user: IUser,
 	error: string,
 }
+
+export interface IPerfil {
+	idUser: string,
+	area: any,
+	direccion: string,
+	telefono: string,
+	email: string,
+	conocimientos: any,
+	experiencias: any,
+	certificados: any,
+	descripcion: string,
+	imagen: any,
+}
+

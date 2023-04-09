@@ -5,8 +5,8 @@ import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntity;
 import javax.validation.constraints.NotBlank;
 
 @MongoEntity(collection = "Comentarios")
-public class Comentarios extends ReactivePanacheMongoEntity{
-    
+public class Comentarios extends ReactivePanacheMongoEntity {
+
     @NotBlank(message = "ID de comentario")
     private String idCom;
     @NotBlank(message = "ID del post")
@@ -16,48 +16,71 @@ public class Comentarios extends ReactivePanacheMongoEntity{
     private String dueñoId;
     @NotBlank(message = "Dueño del comentario")
     private String dueño;
+    private String pImage;
     @NotBlank(message = "Fecha de subida")
     private String fecha;
-    
-    public void setIdCom(String idCom){
+
+    public void setIdCom(String idCom) {
         this.idCom = idCom;
     }
-    public String getIdCom(){
+
+    public String getIdCom() {
         return idCom;
     }
-    
-    public void setPost(String idPost){
+
+    public void setIdPost(String idPost) {
         this.idPost = idPost;
     }
-    public String getPost(){
-        return dueño;
+
+    public String getIdPost() {
+        return idPost;
     }
-    
-    public void setComentario(String comentario){
+
+    public void setComentario(String comentario) {
         this.comentario = comentario;
     }
-    public String getComentario(){
+
+    public String getComentario() {
         return comentario;
     }
 
-    public void setDueñoId(String dueñoId){
+    public void setDueñoId(String dueñoId) {
         this.dueñoId = dueñoId;
     }
-    public String getDueñoId(){
+
+    public String getDueñoId() {
         return dueñoId;
     }
-    
-    public void setDueño(String dueño){
+
+    public void setDueño(String dueño) {
         this.dueño = dueño;
     }
-    public String getDueño(){
+
+    public String getDueño() {
         return dueño;
     }
 
-    public void setFecha(String fecha){
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
-    public String getFecha(){
+
+    public String getFecha() {
         return fecha;
+    }
+
+    public void setPImage(String pImage) {
+        this.pImage = pImage;
+    }
+
+    public String getPImage() {
+        return fecha;
+    }
+
+    public String getpImage() {
+        return pImage;
+    }
+
+    public void setpImage(String pImage) {
+        this.pImage = pImage;
     }
 }

@@ -9,15 +9,19 @@ public class Posts extends ReactivePanacheMongoEntity {
 
     @NotBlank(message = "ID de la publicacion")
     private String idPosts;
+    @NotBlank(message = "Titulo de la publicacion")
     private String titulo;
-    private String imagen;
+    @NotBlank(message = "Comentario de la publicacion")
+    private String comentario;
+    private String file;
+    private String fileName;
     @NotBlank(message = "ID del dueño de la publicacion")
     private String dueñoId;
     @NotBlank(message = "Dueño de la publicacion")
     private String dueño;
+    private String perfil;
     @NotBlank(message = "Fecha de subida")
     private String fecha;
-    private int comentario;
 
     public void setIdPosts(String idPosts) {
         this.idPosts = idPosts;
@@ -35,12 +39,20 @@ public class Posts extends ReactivePanacheMongoEntity {
         return titulo;
     }
 
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
+    public void setFile(String file) {
+        this.file = file;
     }
 
-    public String getImagen() {
-        return imagen;
+    public String getFile() {
+        return file;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 
     public void setDueñoId(String dueñoId) {
@@ -67,11 +79,19 @@ public class Posts extends ReactivePanacheMongoEntity {
         return fecha;
     }
 
-    public void setComentario(int comentario) {
+    public void setComentario(String comentario) {
         this.comentario = comentario;
     }
 
-    public int getComentario() {
+    public String getComentario() {
         return comentario;
+    }
+
+    public void setPerfil(String perfil) {
+        this.perfil = perfil;
+    }
+
+    public String getPerfil() {
+        return perfil;
     }
 }
