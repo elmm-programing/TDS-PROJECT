@@ -12,7 +12,6 @@ import javax.ws.rs.core.Response;
 import tds.towork.model.Comentarios;
 import javax.inject.Inject;
 
-
 import tds.towork.repository.ComentariosRepository;
 
 @Path("/coments")
@@ -44,4 +43,11 @@ public class ComentariosController {
         }
     }
 
+    @POST
+    @Path("commentModal/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Comentarios> subirIdPost(String idPost) {
+        return comentarioRepo.list("idPost = " + idPost + "");
+    }
 }

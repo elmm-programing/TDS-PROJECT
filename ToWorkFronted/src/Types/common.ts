@@ -20,13 +20,13 @@ export interface IPost {
 }
 
 export interface IComentarios {
-	idCom: string,
-	idPost: string,
-	comentario: string,
-	dueñoId: string,
-	dueño: string,
-	fecha: string,
-	perfil: any,
+	idCom: string
+	idPost: string
+	comentario: string
+	dueñoId: string
+	dueño: string
+	fecha: string
+
 }
 export interface IChat {
 	id: string,
