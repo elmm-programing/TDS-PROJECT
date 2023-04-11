@@ -1,0 +1,17 @@
+body {
+    background-color: #f3f2ef;
+}
+
+#perfil input {
+    border: 0;
+    height: 40px;
+    border-radius: 0;
+    border-bottom: 1px solid #ebebeb;
+}
+
+#perfil input:focus {
+    border-bottom: 1px solid #198754;
+    box-shadow: none;
+    outline: 0;
+    transition: 0.5s;
+}

@@ -40,7 +40,7 @@ export interface IAuthResponse {
 	error: string,
 }
 
-export interface IPerfil {
+export interface Perfil {
 	idUser: string,
 	area: any,
 	direccion: string,
