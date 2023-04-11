@@ -2,7 +2,7 @@ import {  Container, Dropdown,  Nav, Navbar } from "react-bootstrap";
 import { AutoComplete } from "./AutoComplete";
 import React from "react";
 import { useUserStore } from "../store/UsersStore";
-
+import { Link } from "react-router-dom";
 export function NavBar() {
 
   const state = useUserStore()
@@ -21,7 +21,7 @@ export function NavBar() {
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>
-                <Navbar.Brand href="#home">To-Work</Navbar.Brand>
+                <Navbar.Brand ><Link className="text-decoration-none text-white" to={"/inicio"}>To-Work</Link></Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="justify-content-center flex-grow-1 ">
@@ -45,7 +45,7 @@ export function NavBar() {
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu >
-                                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                                <Dropdown.Item > <Link className="text-decoration-none text-dark" to={"/perfil"}>Perfil</Link></Dropdown.Item>
                                 <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
                                 <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
                             </Dropdown.Menu>

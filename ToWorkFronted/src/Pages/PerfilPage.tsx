@@ -2,7 +2,6 @@ import { Row, Col, Card, Form, Button, ListGroup } from 'react-bootstrap';
 import { getPosts } from "../Services/Posts"
 import { BaseSyntheticEvent, useEffect, useState } from 'react';
 import '../Styles/Perfil.css';
-import uuid from 'react-uuid';
 import g from '../assets/me-gusta.png';
 import n from '../assets/no me gusta.png';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -13,59 +12,38 @@ import { Perfil, IPost } from '../Types/common';
 import { NavBar } from '../Components/NavBar';
 import Comentario from '../Components/Comentario';
 import { useUserStore } from '../store/UsersStore';
+import { CPerfil } from '../Types/CPerfil';
+import { CComments } from '../Types/CComment';
+import { TagsInput } from "react-tag-input-component";
+import FormEditPerfil from '../Components/FormEditPerfil';
 
 export function PerfilPage() {
-  const today = new Date(Date.now());
   const [name, setName] = useState(n);
   const [imagen, setImagen] = useState('');
   const [inputDireccion, setinputDireccion] = useState('');
   const [inputTelefono, setInputTelefono] = useState('');
   const [inputEmail, setInputEmail] = useState('');
   const [inputDescripcion, setInputDescripcion] = useState('');
-  const [perfil, setPerfil] = useState({
-    idUser: '',
-    imagen: '',
-    area: [''],
-    direccion: '',
-    telefono: '',
-    email: '',
-    conocimientos: [''],
-    experiencias: [''],
-    certificados: [''],
-    descripcion: '',
-  })
+  const [perfil, setPerfil] = useState(new CPerfil)
 
   const userStore = useUserStore()
 
   const [agregado, setAgregado] = useState(0);
   const [cargado, setCargado] = useState(0);
 
-  const [addComment, setaddComment] = useState({
-    idCom: '',
-    idPost: '',
-    comentario: '',
-    dueñoId: '',
-    dueño: '',
-    fecha: '',
-  })
+  const [addComment, setaddComment] = useState(new CComments())
 
   const onChangeInputComment = (e: BaseSyntheticEvent, id: string) => {
     const { name, value } = e.target;
-    setaddComment({
-      idCom: uuid(),
-      idPost: id.toString(),
-      comentario: value,
-      dueñoId: '',
-      dueño: '',
-      fecha: today.toDateString()
-    });
+    addComment.idPost = id.toString()
+    addComment.comentario = value
   }
 
   const handleFile = (e: BaseSyntheticEvent) => {
     let file = e.target.files[0]
     let reader = new FileReader()
     reader.readAsDataURL(file)
-    reader.onload = () => { setImagen(reader.result) }
+    userStore.user.imagen = reader.result
   }
 
   const onChangeInputDireccion = (e: BaseSyntheticEvent) => {
@@ -143,7 +121,15 @@ export function PerfilPage() {
   };
 
   const query = useQuery({ queryKey: ['post'], queryFn: getPosts })
-  const valores = useQuery({ queryKey: ['perfil'], queryFn: () => getPerfil("7fef47d2-1ef7-4448-2b4b-4c1fe8d88ba6") });
+  const valores = useQuery({ queryKey: ['perfil'], queryFn: () => getPerfil(userStore.user.username) });
+  const { data } = useQuery(["perfil"], () => getPerfil(userStore.user.username));
+
+  useEffect(() => {
+    if (data !== undefined) {
+      console.log(data)
+    }
+  }, [data]);
+
 
   function get() {
     if (cargado == 0) {
@@ -151,9 +137,7 @@ export function PerfilPage() {
         setImagen(p.imagen);
         setInputAddArea(p.area);
         setInputAddCertificados(p.certificados);
-        setInputAddConocimientos(p.conocimientos);
-        setInputAddExperiencias(p.experiencias);
-        setinputDireccion(p.direccion)
+        setInputAddConocimientos(p.conocimientos); setInputAddExperiencias(p.experiencias); setinputDireccion(p.direccion)
         setInputDescripcion(p.descripcion)
         setInputTelefono(p.telefono)
         setInputEmail(p.email)
@@ -188,9 +172,9 @@ export function PerfilPage() {
     addCualidades();
   }, [perfil]);
 
-  const agregar = async () => {
+  const agregar = () => {
     console.log(perfil.area);
-    await setPerfil({
+    setPerfil({
       idUser: '7fef47d2-1ef7-4448-2b4b-4c1fe8d88ba6',
       imagen: imagen,
       area: inputAddArea,
@@ -205,199 +189,20 @@ export function PerfilPage() {
     setAgregado(1);
   }
 
-  async function addCualidades() {
+  function addCualidades() {
     if (agregado == 1) {
-      await mutationPerfil.mutate(perfil);
+      mutationPerfil.mutate(perfil);
     }
   }
-
-  const onHandleArea = (e, i) => {
-    let inputValue = [...inputAddArea]
-    inputValue[i] = e.target.value
-    setInputAddArea(inputValue);
-  }
-
-  const onHandleConocimientos = (e, i) => {
-    let inputValue = [...inputAddConocimientos]
-    inputValue[i] = e.target.value
-    setInputAddConocimientos(inputValue);
-  }
-
-  const onHandleExperiencias = (e, i) => {
-    let inputValue = [...inputAddExperiencias]
-    inputValue[i] = e.target.value
-    setInputAddExperiencias(inputValue);
-  }
-
-  const onHandleCertificados = (e, i) => {
-    let inputValue = [...inputAddCertificados]
-    inputValue[i] = e.target.value
-    setInputAddCertificados(inputValue);
-  }
-
+  
 
   return (<>
     <NavBar />
     <div className='p-3 pt-5'>
       <Row>
         <Col md={4} sm={2} className='justify-content-center'>
-          <Card className='p-2 shadow-sm text-center'>
-
-            {valores.data?.map((p: Perfil) => (
-              <Form id='perfil'>
-                <Card.Header className='bg-white'>
-                  <input id="multimedia" accept='image/png, image/jpeg, image/jpg, image/gif' style={{ display: "none" }} onChange={(event) => { handleFile(event) }} type='file' />
-                  <label htmlFor="multimedia" type="button">
-                    {
-                      imagen != '' ? <img className='img-fluid rounded-circle' style={{ maxHeight: '15vh' }} src={imagen} />
-                        :
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} width="100" height="100" stroke="currentColor" >
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    }
-                  </label>
-                  <p className='fw-bold'>Wilker</p>
-                </Card.Header>
-                <Card.Header className='bg-white pt-4'>
-                  <div className="fs-6 fw-bold text-uppercase pb-2" style={{ fontFamily: 'Lucida Console' }}>
-                    Informacion general:
-                  </div>
-                  <div className='text-center pb-3'>
-                    <div className='fw-bold' style={{ color: '#000', fontFamily: 'Lucida Console' }}>Area:</div>
-
-
-                    {inputAddArea.map((item, i) => (
-                      <div className='d-flex justify-content-center pb-3' style={{ fontFamily: 'Lucida Console' }}>
-                        <Form.Control className='h-25 w-50' onChange={(e) => onHandleArea(e, i)} placeholder='Añadir' value={inputAddArea[i]}>
-                        </Form.Control>
-                        {
-                          i == 0 ? "" : <svg xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }} onClick={() => onRemoveArea(i)} width="16" height="16" fill="currentColor" className="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
-                          </svg>
-                        }
-                      </div>
-                    ))}
-
-                    <svg xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }} onClick={addRowArea} width="16" height="16" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                    </svg>
-                  </div>
-
-                  <div className='text-center pb-3'>
-                    <div className='fw-bold' style={{ fontFamily: 'Lucida Console' }}>Direccion:</div>
-                    <div className='d-flex justify-content-center pb-3' style={{ fontFamily: 'Lucida Console' }}>
-                      <Form.Control className='h-25 w-50' onChange={(e) => onChangeInputDireccion(e)} placeholder='Añadir' value={inputDireccion}>
-                      </Form.Control>
-                    </div>
-                  </div>
-
-                  <div className='pb-3'>
-                    <div className='fw-bold' style={{ fontFamily: 'Lucida Console' }}>Telefono:</div>
-                    <div className='d-flex justify-content-center pb-3' style={{ fontFamily: 'Lucida Console' }}>
-                      <Form.Control className='h-25 w-50' type='number' onChange={(e) => onChangeInputTelefono(e)} placeholder='Añadir' value={inputTelefono}>
-                      </Form.Control>
-                    </div>
-                  </div>
-
-                  <div className='pb-3'>
-                    <div className='fw-bold' style={{ fontFamily: 'Lucida Console' }}>Email:</div>
-                    <div className='d-flex justify-content-center pb-3' style={{ fontFamily: 'Lucida Console' }}>
-                      <Form.Control className='h-25 w-50' type='email' onChange={(e) => onChangeInputEmail(e)} placeholder='Añadir' value={inputEmail}>
-                      </Form.Control>
-                    </div>
-                  </div>
-
-                </Card.Header>
-
-                <Card.Header className='bg-white pt-4'>
-                  <div className="fs-6 fw-bold text-uppercase pb-2" style={{ fontFamily: 'Lucida Console' }}>
-                    Conocimientos:
-                  </div>
-
-                  {inputAddConocimientos.map((item, i) => (
-                    <div className='d-flex justify-content-center pb-3' style={{ fontFamily: 'Lucida Console' }}>
-                      <Form.Control className='h-25 w-50' onChange={(e) => onHandleConocimientos(e, i)} placeholder='Añadir' value={inputAddConocimientos[i]}>
-                      </Form.Control>
-                      {
-                        i == 0 ? "" : <svg xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }} onClick={() => onRemoveConocimientos(i)} width="16" height="16" fill="currentColor" className="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
-                        </svg>
-                      }
-                    </div>
-                  ))}
-
-                  <svg xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }} onClick={addRowConocimientos} width="16" height="16" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                  </svg>
-                </Card.Header>
-
-                <Card.Header className='bg-white pt-4'>
-                  <div className="fs-6 fw-bold text-uppercase pb-2" style={{ fontFamily: 'Lucida Console' }}>
-                    Experiencias:
-                  </div>
-
-
-                  {inputAddExperiencias.map((item, i) => (
-                    <div className='d-flex justify-content-center pb-3' style={{ fontFamily: 'Lucida Console' }}>
-                      <Form.Control className='h-25 w-50' onChange={(e) => onHandleExperiencias(e, i)} placeholder='Añadir'>
-                      </Form.Control>
-                      {
-                        i == 0 ? "" : <svg xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }} onClick={() => onRemoveExperiencias(i)} width="16" height="16" fill="currentColor" className="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
-                        </svg>
-                      }
-                    </div>
-                  ))}
-
-                  <svg xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }} onClick={addRowExperiencias} width="16" height="16" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                  </svg>
-                </Card.Header>
-
-                <Card.Header className='bg-white pt-4'>
-                  <div className="fs-6 fw-bold text-uppercase pb-2" style={{ fontFamily: 'Lucida Console' }}>
-                    Certificaciones:
-                  </div>
-
-
-                  {inputAddCertificados.map((item, i) => (
-                    <div className='d-flex justify-content-center pb-3' style={{ fontFamily: 'Lucida Console' }}>
-                      <Form.Control className='h-25 w-50' onChange={(e) => onHandleCertificados(e, i)} placeholder='Añadir' value={inputAddCertificados[i]}>
-                      </Form.Control>
-                      {
-                        i == 0 ? "" : <svg xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }} onClick={() => onRemoveCertificados(i)} width="16" height="16" fill="currentColor" className="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
-                        </svg>
-                      }
-                    </div>
-                  ))}
-
-                  <svg xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }} onClick={addRowCertificados} width="16" height="16" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                  </svg>
-                </Card.Header>
-
-                <Card.Header className='bg-white pt-4'>
-                  <div className="fs-6 fw-bold text-uppercase pb-2" style={{ fontFamily: 'Lucida Console' }}>
-                    Descripcion:
-                  </div>
-                  <div className='d-flex justify-content-center pb-3' style={{ fontFamily: 'Lucida Console' }}>
-                    <Form.Control className='h-25 w-50' onChange={(e) => onChangeInputDescripcion(e)} placeholder='Añadir' value={inputDescripcion}>
-                    </Form.Control>
-                  </div>
-                  <button onClick={agregar} className='border-0 bg-transparent' >
-                    <svg xmlns="http://www.w3.org/2000/svg" style={{ cursor: 'pointer' }} width="16" height="16" fill="currentColor" className="bi bi-check2 m-1" viewBox="0 0 16 16">
-                      <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-                    </svg>
-                  </button>
-                </Card.Header>
-              </Form>
-
-            ))}
-
-
-          </Card>
-        </Col>
+<FormEditPerfil/>
+                  </Col>
 
         <Col className='d-flex align-items-start'>
           <div className='p-5 w-100'>
@@ -463,10 +268,7 @@ export function PerfilPage() {
                         </Form>
                       </Col>
                       <Comentario
-                        idPosts={post.idPosts}
-                        dueño={post.dueño}
-                        titulo={post.titulo}
-                        fecha={post.fecha}
+                        data={post}
                       />
 
                     </Row>

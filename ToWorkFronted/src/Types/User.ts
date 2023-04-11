@@ -9,5 +9,17 @@ export class CUser implements IUser {
 	roles: string[] = [
 		"USER"
 	]
+	telefono = ""
+	direccion = ""
+	area = [
+	]
+	conocimientos = [
+	]
+	experiencias = [
+	]
+	certificados = [
+	]
+	descripcion = ""
+	imagen ="" 
 
 }

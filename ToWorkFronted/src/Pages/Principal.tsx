@@ -8,7 +8,6 @@ export function Principal() {
   return (<>
     <NavBar />
     <div className='pt-5'>
-
       <ChatModal />
       <PostColumn />
     </div>

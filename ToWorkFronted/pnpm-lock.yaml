@@ -25,6 +25,7 @@ specifiers:
   react-bootstrap-typeahead: ^6.1.2
   react-dom: ^18.2.0
   react-router-dom: ^6.8.1
+  react-tag-input-component: ^2.0.2
   react-use-websocket: ^4.3.1
   react-uuid: ^2.0.0
   sort-by: ^1.2.0
@@ -45,6 +46,7 @@ dependencies:
   react-bootstrap-typeahead: 6.1.2_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
   react-router-dom: 6.8.1_biqbaboplfbrettd7655fr4n2y
+  react-tag-input-component: 2.0.2_biqbaboplfbrettd7655fr4n2y
   react-use-websocket: 4.3.1_biqbaboplfbrettd7655fr4n2y
   react-uuid: 2.0.0
   sort-by: 1.2.0
@@ -2209,6 +2211,16 @@ packages:
     dependencies:
       '@remix-run/router': 1.3.2
       react: 18.2.0
+    dev: false
+
+  /react-tag-input-component/2.0.2_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-dydI9luVwwv9vrjE5u1TTnkcOVkOVL6mhFti8r6hLi78V2F2EKWQOLptURz79UYbDHLSk6tnbvGl8FE+sMpADg==}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+      react-dom: ^16 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-transition-group/4.4.5_biqbaboplfbrettd7655fr4n2y:

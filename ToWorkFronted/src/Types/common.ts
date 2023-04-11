@@ -5,6 +5,14 @@ export interface IUser {
 	username: string,
 	password: string,
 	roles: string[],
+	telefono:string,
+	direccion : string,
+	area: string[],
+	conocimientos:string[] 
+	experiencias:string[]
+	certificados:string[]
+	descripcion:string
+	imagen:any
 }
 
 export interface IPost {

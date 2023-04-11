@@ -8,10 +8,10 @@ import io.quarkus.mongodb.panache.reactive.ReactivePanacheMongoEntity;
 @MongoEntity(collection = "Perfil")
 public class Perfil extends ReactivePanacheMongoEntity {
     private String idUser;
-    private List<String> area;
     private String direccion;
     private String telefono;
     private String email;
+    private List<String> area;
     private List<String> conocimientos;
     private List<String> experiencias;
     private List<String> certificados;

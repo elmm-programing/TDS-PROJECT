@@ -10,6 +10,10 @@ import { useUserStore } from '../store/UsersStore';
 import { CUser } from '../Types/User';
 import { IAuthResponse } from '../Types/common';
 import { setCookie } from '../Utils/GetCookies';
+import { useMutation } from '@tanstack/react-query';
+import { subirPerfil } from '../Services/Perfil';
+import { queryClient } from '../Utils/QueryClient';
+import { CPerfil } from '../Types/CPerfil';
 
 function Register() {
 
@@ -17,7 +21,7 @@ function Register() {
   const [alertText, setAlertText] = useState("");
   const [variant, setVariant] = useState("")
   const state = useUserStore()
-
+const [perfil, setPerfil] = useState(new CPerfil)
   const [user, setUser] = useState(new CUser())
     const onChangeInput = (e: BaseSyntheticEvent) => {
     const { name, value } = e.target
@@ -30,6 +34,8 @@ function Register() {
     if (response.token) {
       setCookie('jwtToken', response.token)
       state.setUser(response.user)
+      perfil.idUser=response.user.username
+      mutationPerfil.mutate(perfil);
       navigate("/inicio");
 
     } else if (response.error == "El Usuario ya existe") {
@@ -39,8 +45,14 @@ function Register() {
     }
 
   }
-  const keys = Object.keys(user).filter(key => key != "roles")
-
+  const keys = Object.keys(user).filter(key => key != "roles" && key != "telefono" && key != "direccion"&& key != "area"&& key != "conocimientos"&& key != "experiencias"&& key != "certificados"&& key != "descripcion"&& key != "imagen")
+  const mutationPerfil = useMutation({
+    mutationFn: subirPerfil,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['perfil'] })
+    },
+  })
 
   return (
     <>
