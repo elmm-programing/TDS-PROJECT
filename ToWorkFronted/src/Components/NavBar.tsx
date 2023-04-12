@@ -3,10 +3,11 @@ import { AutoComplete } from "./AutoComplete";
 import React from "react";
 import { useUserStore } from "../store/UsersStore";
 import { Link } from "react-router-dom";
+import { CUser } from "../Types/User";
 export function NavBar() {
-
+    
     const state = useUserStore()
-    const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+            const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
         <a
             href=""
             className="text-light text-decoration-none mt-1 d-flex flex-row" onClick={(e) => {
@@ -17,7 +18,10 @@ export function NavBar() {
             {children}
         </a>
     ));
+const deleteSelectedOnStorate = ()=>{
+state.selectedPerfil = new CUser()
 
+    }
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>
@@ -45,7 +49,7 @@ export function NavBar() {
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu >
-                                <Dropdown.Item > <Link className="text-decoration-none text-dark" to={"/perfil"}>Perfil</Link></Dropdown.Item>
+                                <Dropdown.Item > <Link onClick={deleteSelectedOnStorate} className="text-decoration-none text-dark" to={"/perfil"}>Perfil</Link></Dropdown.Item>
                                 <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
                                 <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
                             </Dropdown.Menu>

@@ -1,5 +1,5 @@
 import { Row, Col, Card, Form, Button, ListGroup } from 'react-bootstrap';
-import { getPosts } from "../Services/Posts"
+import { getPosts, getPostsByUsername } from "../Services/Posts"
 import { BaseSyntheticEvent, useEffect, useState } from 'react';
 import '../Styles/Perfil.css';
 import g from '../assets/me-gusta.png';
@@ -14,22 +14,10 @@ import Comentario from '../Components/Comentario';
 import { useUserStore } from '../store/UsersStore';
 import { CPerfil } from '../Types/CPerfil';
 import { CComments } from '../Types/CComment';
-import { TagsInput } from "react-tag-input-component";
 import FormEditPerfil from '../Components/FormEditPerfil';
 
 export function PerfilPage() {
   const [name, setName] = useState(n);
-  const [imagen, setImagen] = useState('');
-  const [inputDireccion, setinputDireccion] = useState('');
-  const [inputTelefono, setInputTelefono] = useState('');
-  const [inputEmail, setInputEmail] = useState('');
-  const [inputDescripcion, setInputDescripcion] = useState('');
-  const [perfil, setPerfil] = useState(new CPerfil)
-
-  const userStore = useUserStore()
-
-  const [agregado, setAgregado] = useState(0);
-  const [cargado, setCargado] = useState(0);
 
   const [addComment, setaddComment] = useState(new CComments())
 
@@ -37,78 +25,6 @@ export function PerfilPage() {
     const { name, value } = e.target;
     addComment.idPost = id.toString()
     addComment.comentario = value
-  }
-
-  const handleFile = (e: BaseSyntheticEvent) => {
-    let file = e.target.files[0]
-    let reader = new FileReader()
-    reader.readAsDataURL(file)
-    userStore.user.imagen = reader.result
-  }
-
-  const onChangeInputDireccion = (e: BaseSyntheticEvent) => {
-    const { name, value } = e.target;
-    setinputDireccion(value);
-  }
-
-  const onChangeInputTelefono = (e: BaseSyntheticEvent) => {
-    const { name, value } = e.target;
-    setInputTelefono(value);
-  }
-
-  const onChangeInputEmail = (e: BaseSyntheticEvent) => {
-    const { name, value } = e.target;
-    setInputEmail(value);
-  }
-
-  const onChangeInputDescripcion = (e: BaseSyntheticEvent) => {
-    const { name, value } = e.target;
-    setInputDescripcion(value);
-  }
-
-  const [inputAddArea, setInputAddArea] = useState<string[]>([''])
-  const [inputAddConocimientos, setInputAddConocimientos] = useState<string[]>([''])
-  const [inputAddExperiencias, setInputAddExperiencias] = useState<string[]>([''])
-  const [inputAddCertificados, setInputAddCertificados] = useState<string[]>([''])
-
-  const addRowArea = () => {
-    setInputAddArea([...inputAddArea, ''])
-  }
-
-  const addRowConocimientos = () => {
-    setInputAddConocimientos([...inputAddConocimientos, ''])
-  }
-
-  const addRowExperiencias = () => {
-    setInputAddExperiencias([...inputAddExperiencias, ''])
-  }
-
-  const addRowCertificados = () => {
-    setInputAddCertificados([...inputAddCertificados, ''])
-  }
-
-  const onRemoveArea = (i) => {
-    const inputValue = [...inputAddArea]
-    inputValue.splice(i, 1)
-    setInputAddArea(inputValue)
-  }
-
-  const onRemoveConocimientos = (i) => {
-    const inputValue = [...inputAddConocimientos]
-    inputValue.splice(i, 1)
-    setInputAddConocimientos(inputValue)
-  }
-
-  const onRemoveExperiencias = (i) => {
-    const inputValue = [...inputAddExperiencias]
-    inputValue.splice(i, 1)
-    setInputAddExperiencias(inputValue)
-  }
-
-  const onRemoveCertificados = (i) => {
-    const inputValue = [...inputAddCertificados]
-    inputValue.splice(i, 1)
-    setInputAddCertificados(inputValue)
   }
 
   const changeName = () => {
@@ -119,32 +35,9 @@ export function PerfilPage() {
       setName(n);
     }
   };
+  const userStore = useUserStore()
 
-  const query = useQuery({ queryKey: ['post'], queryFn: getPosts })
-  const valores = useQuery({ queryKey: ['perfil'], queryFn: () => getPerfil(userStore.user.username) });
-  const { data } = useQuery(["perfil"], () => getPerfil(userStore.user.username));
-
-  useEffect(() => {
-    if (data !== undefined) {
-      console.log(data)
-    }
-  }, [data]);
-
-
-  function get() {
-    if (cargado == 0) {
-      valores.data?.map((p: Perfil) => {
-        setImagen(p.imagen);
-        setInputAddArea(p.area);
-        setInputAddCertificados(p.certificados);
-        setInputAddConocimientos(p.conocimientos); setInputAddExperiencias(p.experiencias); setinputDireccion(p.direccion)
-        setInputDescripcion(p.descripcion)
-        setInputTelefono(p.telefono)
-        setInputEmail(p.email)
-        setCargado(1)
-      })
-    }
-  }
+  const query = useQuery({ queryKey: ['post'], queryFn: ()=> getPostsByUsername(userStore.selectedPerfil.username === ""? userStore.user.username:userStore.selectedPerfil.username) })
 
 
   const mutationCom = useMutation({
@@ -155,54 +48,16 @@ export function PerfilPage() {
     },
   })
 
-  // Mutations
-  const mutationPerfil = useMutation({
-    mutationFn: subirPerfil,
-    onSuccess: () => {
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ['perfil'] })
-    },
-  })
-
-  useEffect(() => {
-    get();
-  }, [valores]);
-
-  useEffect(() => {
-    addCualidades();
-  }, [perfil]);
-
-  const agregar = () => {
-    console.log(perfil.area);
-    setPerfil({
-      idUser: '7fef47d2-1ef7-4448-2b4b-4c1fe8d88ba6',
-      imagen: imagen,
-      area: inputAddArea,
-      direccion: inputDireccion,
-      telefono: inputTelefono,
-      email: inputEmail,
-      conocimientos: inputAddConocimientos,
-      experiencias: inputAddExperiencias,
-      certificados: inputAddCertificados,
-      descripcion: inputDescripcion
-    })
-    setAgregado(1);
-  }
-
-  function addCualidades() {
-    if (agregado == 1) {
-      mutationPerfil.mutate(perfil);
-    }
-  }
-  
-
   return (<>
     <NavBar />
     <div className='p-3 pt-5'>
       <Row>
         <Col md={4} sm={2} className='justify-content-center'>
-<FormEditPerfil/>
-                  </Col>
+{userStore.selectedPerfil.username === "" ?<FormEditPerfil  editable={true} /> 
+ :<FormEditPerfil cUser={userStore.selectedPerfil}  editable={false} />
+
+}
+        </Col>
 
         <Col className='d-flex align-items-start'>
           <div className='p-5 w-100'>
@@ -312,8 +167,4 @@ export function PerfilPage() {
   )
 
 
-}
-
-function componentDidMount() {
-  throw new Error('Function not implemented.');
 }

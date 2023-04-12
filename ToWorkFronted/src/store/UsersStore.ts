@@ -5,12 +5,14 @@ import { RestApiClient } from '../Utils/RestApiClient'
 
 interface UserState {
   user: IUser
+  selectedPerfil: IUser
   setUserName: (userName: string) => void
   setUser: (newUser: IUser) => void
 }
 
 export const useUserStore = create<UserState>((set) => ({
   user: new CUser,
+  selectedPerfil:new CUser,
   setUserName: (userName: string) => set((state) => {
     let sUser = state.user
     sUser.username = userName

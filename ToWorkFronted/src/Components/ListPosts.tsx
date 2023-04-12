@@ -93,12 +93,9 @@ export default function ListPosts() {
               <Comentario
                 data={todo}
               />
-
             </Row>
           </Card.Footer>
         </Card>
-
-
       )
     }
 

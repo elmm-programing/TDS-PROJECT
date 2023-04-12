@@ -18,3 +18,10 @@ export const subirPost = async (posts: IPost) => {
   })
 
 }
+export const getPostsByUsername = async (username:string) => {
+  return await RestApiClient("posts/user/"+username, {
+    method: 'GET',
+    headers: { "Authorization": `Bearer ${cookies.get('jwtToken')}` }
+  })
+}
+

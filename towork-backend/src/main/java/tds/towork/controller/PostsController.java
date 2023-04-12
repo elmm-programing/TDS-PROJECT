@@ -37,9 +37,23 @@ public class PostsController {
     @GET
     @Path("/{titulo}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response GetUser(String titulo) {
+    public Response GetByTitulo(String titulo) {
         try {
         String query = String.format("{'titulo': { '$regex': /^%s/i }}", titulo);
+        return Response.status(Response.Status.CREATED).entity(postRepo.find(query).list()).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(e).build();
+        }
+        
+    }
+    @PermitAll
+    // @RolesAllowed("USER")
+    @GET
+    @Path("user/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response GetByUsername(String username) {
+        try {
+        String query = String.format("{'dueño': { '$regex': /^%s/i }}", username);
         return Response.status(Response.Status.CREATED).entity(postRepo.find(query).list()).build();
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(e).build();
