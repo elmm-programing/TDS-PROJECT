@@ -12,6 +12,7 @@ import javax.validation.Validator;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -67,12 +68,12 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response GetUser(String username) {
         try {
-        String query = String.format("{'username': { '$regex': /^%s/i }}", username);
-        return Response.status(Response.Status.CREATED).entity(userRepo.find(query).list()).build();
+            String query = String.format("{'username': { '$regex': /^%s/i }}", username);
+            return Response.status(Response.Status.CREATED).entity(userRepo.find(query).list()).build();
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(e).build();
         }
-        
+
     }
 
     @PermitAll
@@ -90,10 +91,12 @@ public class UserController {
             if (fEmail == null && fUsername == null) {
                 userRepo.persist(user);
 
-                    AuthResponse entity = new AuthResponse(TokenUtils.generateToken(user.getUsername(), user.getRoles(), duration),user);
+                AuthResponse entity = new AuthResponse(
+                        TokenUtils.generateToken(user.getUsername(), user.getRoles(), duration), user);
                 return Response.status(Response.Status.CREATED).entity(entity).build();
             } else {
-                return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new AuthResponse("El Usuario ya existe")).build();
+                return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new AuthResponse("El Usuario ya existe"))
+                        .build();
             }
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(e).build();
@@ -118,7 +121,8 @@ public class UserController {
         if (fEmail != null) {
             if (fEmail.getPassword().equals(passwordEncoder.encode(user.getPassword().toString()))) {
                 try {
-                    AuthResponse entity = new AuthResponse(TokenUtils.generateToken(fEmail.getUsername(), fEmail.getRoles(), duration),fEmail);
+                    AuthResponse entity = new AuthResponse(
+                            TokenUtils.generateToken(fEmail.getUsername(), fEmail.getRoles(), duration), fEmail);
 
                     return Response.status(Response.Status.CREATED)
                             .entity(entity)
@@ -135,7 +139,9 @@ public class UserController {
             if (fUsername.getPassword().equals(passwordEncoder.encode(user.getPassword().toString()))) {
                 try {
 
-                    AuthResponse entity = new AuthResponse(TokenUtils.generateToken(fUsername.getUsername(), fUsername.getRoles(), duration),fUsername);
+                    AuthResponse entity = new AuthResponse(
+                            TokenUtils.generateToken(fUsername.getUsername(), fUsername.getRoles(), duration),
+                            fUsername);
                     return Response.status(Response.Status.CREATED)
                             .entity(entity)
                             .build();
@@ -149,6 +155,23 @@ public class UserController {
         } else {
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(new AuthResponse("User Not Found")).build();
         }
+    }
+
+    @PermitAll
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUser(@Valid User user) {
+
+        try {
+            userRepo.update(user);
+            AuthResponse entity = new AuthResponse();
+            entity.setUser(user);
+            return Response.status(Response.Status.CREATED).entity(entity).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(e).build();
+        }
+
     }
 
 }

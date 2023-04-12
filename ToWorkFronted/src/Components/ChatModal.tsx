@@ -1,4 +1,4 @@
-import { useEffect,  useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Col, Card } from 'react-bootstrap';
 import user from '../assets/user.png';
 import '../Styles/Feed.css'; import { useMutation, useQuery } from '@tanstack/react-query';
@@ -52,7 +52,7 @@ export default function ChatModal() {
 		shouldReconnect: (closeEvent) => true,
 	});
 
-		return (showChat) ? (
+	return (showChat) ? (
 
 		<Col className='position-fixed bottom-0 rounded end-0 w-25 h-75' style={{ backgroundColor: "#fff" }}>
 			<Card id='chat' className='rounded border-1 h-100 w-100' style={{ backgroundColor: "#fff" }}>
@@ -66,7 +66,7 @@ export default function ChatModal() {
 					</>) : (<></>)}
 
 
-					<img onClick={changeState} src={user} style={{ height: 40 }} />
+					<img className='img-fluid rounded-circle' onClick={changeState} src={userState.user.imagen == '' && userState.user.imagen == null ? user : userState.user.imagen} style={{ height: 40 }} />
 					<a onClick={changeState}>{userState.user.username}</a>
 				</Card.Header>
 
@@ -85,7 +85,7 @@ export default function ChatModal() {
 		<Col className='position-fixed bottom-0 rounded end-0 w-25' style={{ backgroundColor: "#fff" }}>
 			<Card id='chat' className='rounded border-1 h-100 w-100' style={{ backgroundColor: "#fff" }}>
 				<Card.Header onClick={changeState} style={{ cursor: 'pointer' }}>
-					<img src={user} style={{ height: 40 }} />
+					<img className='img-fluid rounded-circle ' src={userState.user.imagen == '' && userState.user.imagen == null ? user : userState.user.imagen} style={{ height: 40 }} />
 					<a>{userState.user.username}</a>
 				</Card.Header>
 			</Card>

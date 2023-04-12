@@ -25,3 +25,11 @@ export const addUser = (user: IUser) => {
   })
 
 }
+export const updateUser = (user: IUser) => {
+  return RestApiClient("users/", {
+    method: 'PUT',
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user),
+  })
+
+}

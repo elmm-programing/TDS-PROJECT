@@ -20,6 +20,6 @@ export class CUser implements IUser {
 	certificados = [
 	]
 	descripcion = ""
-	imagen ="" 
+	imagen: any
 
 }
