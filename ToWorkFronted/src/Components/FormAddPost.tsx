@@ -4,6 +4,7 @@ import { Alert, Button, Card, Fade, Form } from 'react-bootstrap';
 import { usePostStore } from '../store/PostsStore';
 import { useUserStore } from '../store/UsersStore';
 import { IPost } from '../Types/common';
+import { CPost } from '../Types/CPost';
 
 export default function FormAddPost(props: { mutation: UseMutationResult<any, unknown, IPost, unknown> }) {
   const postStore = usePostStore()
@@ -15,18 +16,21 @@ export default function FormAddPost(props: { mutation: UseMutationResult<any, un
     const { name, value } = e.target
     postStore.setNewPost({ ...postStore.newPost, [name]: value })
   }
+  const username = userStore.user.username
 
   const handleFile = async (e: BaseSyntheticEvent) => {
     let file = e.target.files[0]
     let reader = new FileReader()
     reader.readAsDataURL(file)
-    reader.onload = () => { postStore.setNewPost({ ...postStore.newPost, file: reader.result, fileName: file.name }) }
+    reader.onload = () => { postStore.setNewPost({ ...postStore.newPost, file: reader.result, fileName: file.name, }) }
   }
 
   const onSubmit = () => {
-    postStore.setNewPost({ ...postStore.newPost, perfil: 'imagen', dueño: userStore.user.username, dueñoId: userStore.user.username });
-    props.mutation.mutate(postStore.newPost);
+    postStore.newPost.dueño = username
+    postStore.newPost.dueñoId = username
     postStore.allPosts.push(postStore.newPost)
+    props.mutation.mutate(postStore.newPost);
+    postStore.newPost = new CPost();
   }
 
   return (<>
