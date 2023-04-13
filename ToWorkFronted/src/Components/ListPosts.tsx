@@ -11,6 +11,7 @@ import { useMutation } from '@tanstack/react-query';
 import { subirComentarios } from '../Services/Comentario';
 import { queryClient } from '../Utils/QueryClient';
 import Comentario from './Comentario';
+import { AceptarTrabajo } from '../Services/Trabajos';
 
 export default function ListPosts() {
   const postStore = usePostStore()
@@ -27,6 +28,20 @@ export default function ListPosts() {
 
     setaddComment({ ...addComment, idPost: id.toString(), comentario: value, dueñoId: userStore.user.username, dueño: userStore.user.username })
   }
+  const aceptarTrabajo = (todo: IPost) => {
+    console.log(todo)
+    let trabajo = { idUser: userStore.user.username, titulo: todo.titulo, idCliente: todo.dueñoId, idPost: todo.id }
+    mutationTrabajos.mutate(trabajo)
+
+  }
+  const mutationTrabajos = useMutation({
+    mutationFn: AceptarTrabajo,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['trabajos'] })
+    },
+  })
+
   const mutationCom = useMutation({
     mutationFn: subirComentarios,
     onSuccess: () => {
@@ -66,7 +81,7 @@ export default function ListPosts() {
                 </a>
               </div>
             }
-            <div className='pt-4 d-flex justify-content-sm-end'><Button type="submit" className="btn btn-success font-weight-bold text-uppercase">Aceptar Propuesta</Button></div>
+            <div className='pt-4 d-flex justify-content-sm-end'><Button onClick={() => aceptarTrabajo(todo)} type="submit" className="btn btn-success font-weight-bold text-uppercase">Aceptar Propuesta</Button></div>
           </Card.Body>
           <Card.Footer>
             <Row className='d-flex align-items-center justify-content-center'>

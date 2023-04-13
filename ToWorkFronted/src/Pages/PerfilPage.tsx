@@ -15,6 +15,7 @@ import { useUserStore } from '../store/UsersStore';
 import { CPerfil } from '../Types/CPerfil';
 import { CComments } from '../Types/CComment';
 import FormEditPerfil from '../Components/FormEditPerfil';
+import { getWorkByUserName } from '../Services/Trabajos';
 
 export function PerfilPage() {
   const [name, setName] = useState(n);
@@ -37,7 +38,9 @@ export function PerfilPage() {
   };
   const userStore = useUserStore()
 
-  const query = useQuery({ queryKey: ['post'], queryFn: ()=> getPostsByUsername(userStore.selectedPerfil.username === ""? userStore.user.username:userStore.selectedPerfil.username) })
+  const query = useQuery({ queryKey: ['post'], queryFn: () => getPostsByUsername(userStore.selectedPerfil.username === "" ? userStore.user.username : userStore.selectedPerfil.username) })
+  const getTrabajos = useQuery({ queryKey: ['trabajo'], queryFn: () => getWorkByUserName(userStore.selectedPerfil.username === "" ? userStore.user.username : userStore.selectedPerfil.username) })
+
 
 
   const mutationCom = useMutation({
@@ -53,10 +56,10 @@ export function PerfilPage() {
     <div className='p-3 pt-5'>
       <Row>
         <Col md={4} sm={2} className='justify-content-center'>
-{userStore.selectedPerfil.username === "" ?<FormEditPerfil  editable={true} /> 
- :<FormEditPerfil cUser={userStore.selectedPerfil}  editable={false} />
+          {userStore.selectedPerfil.username === "" ? <FormEditPerfil editable={true} />
+            : <FormEditPerfil cUser={userStore.selectedPerfil} editable={false} />
 
-}
+          }
         </Col>
 
         <Col className='d-flex align-items-start'>
@@ -87,8 +90,7 @@ export function PerfilPage() {
                     <p className='h4 text-truncate'>{post.titulo}</p>
                     {post.comentario}
                     {post.file == '' ? '' :
-                      <div className='d-flex align-items-center justify-content-center'>
-                        <img onError={(event) => { event.currentTarget.style.display = 'none'; }} className='img-fluid rounded' style={{ maxHeight: '100vh' }} src={post.file} />
+                      <div className='d-flex align-items-center justify-content-center'> <img onError={(event) => { event.currentTarget.style.display = 'none'; }} className='img-fluid rounded' style={{ maxHeight: '100vh' }} src={post.file} />
                         {post.file.includes("image") == false ?
                           <a style={{ textDecoration: 'none' }} download={post.fileName} href={post.file}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-download" viewBox="0 0 16 16">
@@ -140,22 +142,20 @@ export function PerfilPage() {
         <Col md={3} sm={2} className=''>
           <Card className='p-2 shadow-sm w-100'>
             <Card.Header className='bg-white'>
-              <p className='font-weight-bold h5'>Ultimos Trabajos</p>
+              <p className='font-weight-bold h5'>Trabajos Aceptados</p>
             </Card.Header>
             <Card.Body>
               <ListGroup>
-                <ListGroup.Item as="li" className="border-0 justify-content-between align-items-start" style={{ cursor: 'pointer' }}>
-                  <div className="ms-2 text-start">
-                    <p className="fw-bold">Luz automatica</p>
-                    <p className="blockquote-footer">Hola</p>
-                  </div>
-                </ListGroup.Item>
-                <ListGroup.Item as="li" className="border-0 justify-content-between align-items-start" style={{ cursor: 'pointer' }}>
-                  <div className="ms-2 text-start">
-                    <p className="fw-bold">Luz automatica</p>
-                    <p className="blockquote-footer">Hola</p>
-                  </div>
-                </ListGroup.Item>
+
+
+                {getTrabajos.data?.map((trabajo: { idUser: string, titulo: string, idCliente: string }) => (
+                  <ListGroup.Item as="li" className="border-0 justify-content-between align-items-start" style={{ cursor: 'pointer' }}>
+                    <div className="ms-2 text-start">
+                      <p className="fw-bold">{trabajo.titulo}</p>
+                      <p className="blockquote-footer">{trabajo.idCliente}</p>
+                    </div>
+                  </ListGroup.Item>
+                ))}
               </ListGroup>
             </Card.Body>
           </Card>
